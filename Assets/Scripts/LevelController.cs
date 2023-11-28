@@ -5,6 +5,7 @@ using UnityEngine;
 public class LevelController : MonoBehaviour {
 
     public List<Level> levels = new List<Level>();
+    public List<Transform> levelsPositions = new List<Transform>();
     public int currentLevel = 0;
     public PlayerController player;
 
@@ -14,14 +15,24 @@ public class LevelController : MonoBehaviour {
         StartLevel();
     }
 
+    private void Update() {
+        CheckInputs();
+    }
+
     public void StartLevel() {
         Service.availableServices = levels[currentLevel].servicesAtLevel;
+    }
+
+    private void CheckInputs() {
+        if (Input.GetKeyDown(KeyCode.C)) { CompleteLevel(); }
+
     }
 
     /// <summary>
     /// Blocks player inputs and start a transition to the next level
     /// </summary>
     public void CompleteLevel() {
+
         if (!_transitioning) {
             StartCoroutine(TransitionToNextLevel());
         }
@@ -31,26 +42,20 @@ public class LevelController : MonoBehaviour {
         _transitioning = true;
         PlayerController.blockInputs = true;
 
-        MoveWalls("up");
 
-        //PlayerController.NextlevelTarget = levels[currentLevel].transform.position;
-        player.NextLevelMovement();
-
-        yield return null;
         currentLevel++;
-
-        MoveWalls("down");
-
+        PlayerController.NextlevelTarget = levelsPositions[currentLevel].position;
+        yield return StartCoroutine(player.NextLevelMovement());
 
         _transitioning = false;
     }
 
-    private void MoveWalls(string direction) {
-        if (direction.Contains("Up") || direction.Contains("up")) {
+    //private void MoveWalls(string direction) {
+    //    if (direction.Contains("Up") || direction.Contains("up")) {
 
-        } else if (direction.Contains("Down") || direction.Contains("down")) {
+    //    } else if (direction.Contains("Down") || direction.Contains("down")) {
 
-        }
-    }
+    //    }
+    //}
 
 }

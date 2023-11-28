@@ -80,30 +80,24 @@ public class PlayerController : MonoBehaviour {
         Physics.OverlapBoxNonAlloc(interactionZone.position, interactionZone.localScale / 2f, _interactables);
     }
 
-    /// <summary>
-    /// Moves to the next level and stops blocking playerInputs
-    /// </summary>
-    public void NextLevelMovement() {
+    public IEnumerator NextLevelMovement() {
+
         if (!_movingToNextLevel) {
-            StartCoroutine(MoveToNextLevel());
+            _movingToNextLevel = true;
+            Vector3 _startPosition = transform.position;
+
+            while (Vector3.Distance(transform.position, NextlevelTarget) > 1) {
+                //Cosas que podrían pasar con el movimiento al siguiente nivel
+                // => Que se quede atrapado contra una pared => quitar el collider
+                // => Que nunca llegue a esta distancia => Si se pasa del ángulo
+                // => Que la dirección sea atravesando el edificio y nunca pueda entrar => Nav Mesh???
+                transform.position = Vector3.MoveTowards(_startPosition, NextlevelTarget, speed * Time.deltaTime);
+                yield return null;
+            }
+
+            blockInputs = false;
+            _movingToNextLevel = false;
         }
-    }
-
-    private IEnumerator MoveToNextLevel() {
-        _movingToNextLevel = true;
-
-
-        while (Vector3.Distance(transform.position, NextlevelTarget) > 1) {
-            //Cosas que podrían pasar con el movimiento al siguiente nivel
-            // => Que se quede atrapado contra una pared => quitar el collider
-            // => Que nunca llegue a esta distancia => Si se pasa del ángulo
-            // => Que la dirección sea atravesando el edificio y nunca pueda entrar => Nav Mesh???
-
-            yield return null;
-        }
-
-        blockInputs = false;
-        _movingToNextLevel = false;
     }
 
 }

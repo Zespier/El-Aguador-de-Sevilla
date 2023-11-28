@@ -27,6 +27,8 @@ public class Client : MonoBehaviour, IInteractable {
             Debug.Log("Client served with: " + service.name);
             return null;
         }
+
+        Debug.Log("WRONG SERVICE");
         return service;
     }
 }
