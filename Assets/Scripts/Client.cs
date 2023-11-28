@@ -24,6 +24,7 @@ public class Client : MonoBehaviour, IInteractable {
         if (desiredService.name == service.name) {
             Events.OnClientServed?.Invoke();
             desiredService = null;
+            Debug.Log("Client served with: " + service.name);
             return null;
         }
         return service;
