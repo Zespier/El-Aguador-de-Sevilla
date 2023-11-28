@@ -4,6 +4,7 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour {
 
@@ -12,6 +13,7 @@ public class PlayerController : MonoBehaviour {
     [Header("Interactor")]
     public Transform interactionZone;
     public static bool blockInputs;
+    public ServiceType serviceInHand = null;
 
 
     private Vector3 _direction;
@@ -26,7 +28,7 @@ public class PlayerController : MonoBehaviour {
 
         Movement();
         Rotation();
-        TestInteractionZone();
+        CheckInteractionZone();
     }
 
     private void OnDrawGizmos() {
@@ -67,15 +69,15 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void PickUp() {
-
-    }
-
-    private void TestInteractionZone() {
-        if (Physics.OverlapBoxNonAlloc(interactionZone.position, interactionZone.localScale / 2f, _interactables) > 0) {
-            for (int i = 0; i < _interactables.Length; i++) {
-                //Debug.Log(_interactables[i].gameObject.name + " Order: " + i);
+        for (int i = 0; i < _interactables.Length; i++) {
+            if (_interactables[i] != null && _interactables[i].TryGetComponent(out IInteractable interactable)) {
+                serviceInHand = interactable.Interact(serviceInHand);
             }
         }
+    }
+
+    private void CheckInteractionZone() {
+        Physics.OverlapBoxNonAlloc(interactionZone.position, interactionZone.localScale / 2f, _interactables);
     }
 
     /// <summary>

@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Level : MonoBehaviour {
+[System.Serializable]
+public class Level {
 
-    public List<GameObject> walls = new List<GameObject>();
+    public List<ServiceType> servicesAtLevel = new List<ServiceType>();
 
 }

@@ -5,14 +5,17 @@ using UnityEngine;
 public class LevelController : MonoBehaviour {
 
     public List<Level> levels = new List<Level>();
-    public List<List<Servicio>> servicesAtLevel = new List<List<Servicio>>();
     public int currentLevel = 0;
     public PlayerController player;
 
     private bool _transitioning;
 
+    private void Awake() {
+        StartLevel();
+    }
+
     public void StartLevel() {
-        Service.availableServices = servicesAtLevel[currentLevel];
+        Service.availableServices = levels[currentLevel].servicesAtLevel;
     }
 
     /// <summary>
@@ -30,7 +33,7 @@ public class LevelController : MonoBehaviour {
 
         MoveWalls("up");
 
-        PlayerController.NextlevelTarget = levels[currentLevel].transform.position;
+        //PlayerController.NextlevelTarget = levels[currentLevel].transform.position;
         player.NextLevelMovement();
 
         yield return null;

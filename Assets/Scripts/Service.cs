@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Service : MonoBehaviour {
 
-    public List<Servicio> allServices;
-    public static List<Servicio> availableServices;
+    public List<ServiceType> allServices;
+    public static List<ServiceType> availableServices;
 
     public static Service instance;
 
