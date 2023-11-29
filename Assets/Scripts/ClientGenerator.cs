@@ -23,17 +23,23 @@ public class ClientGenerator : MonoBehaviour {
     }
 
     private void SpawnClient() {
-        bool _canSpawn = false;
-        List<bool> occupied = LevelController.instance.levels[LevelController.instance.currentLevel].occupied;
-        for (int i = 0; i < occupied.Count; i++) {
-            if (!occupied[i]) {
-                _canSpawn = true;
-            }
-        }
 
-        if (_canSpawn) {
-            _newClient = Instantiate(clientPrefab);
-            _newClient.transform.position = LevelController.instance.levels[LevelController.instance.currentLevel].spawnPoint.position;
+        if (LevelController.instance.levels[LevelController.instance.currentLevel].occupied != null &&
+            LevelController.instance.levels[LevelController.instance.currentLevel].occupied.Count > 0) {
+
+            bool _canSpawn = false;
+
+            List<bool> occupied = LevelController.instance.levels[LevelController.instance.currentLevel].occupied;
+            for (int i = 0; i < occupied.Count; i++) {
+                if (!occupied[i]) {
+                    _canSpawn = true;
+                }
+            }
+
+            if (_canSpawn) {
+                _newClient = Instantiate(clientPrefab);
+                _newClient.transform.position = LevelController.instance.levels[LevelController.instance.currentLevel].spawnPoint.position;
+            }
         }
     }
 

@@ -8,6 +8,7 @@ public class Client : MonoBehaviour, IInteractable {
     public ServiceType desiredService;
     public GameObject bubble;
     public Image serviceImage;
+    public SpriteRenderer clientSprite;
 
     private bool _reachedDestination;
     private int _currentSeat;
@@ -73,7 +74,7 @@ public class Client : MonoBehaviour, IInteractable {
             return seats[_availableSitsIndex[randomIndex]].position;
 
         } else {
-            Debug.LogError("Couldn't find any sit available");
+            //Debug.LogError("Couldn't find any sit available");
             return -Vector3.forward * 100;
         }
 
@@ -84,6 +85,7 @@ public class Client : MonoBehaviour, IInteractable {
         while (!_reachedDestination) {
 
             transform.position = Vector3.MoveTowards(transform.position, towards, 3 * Time.deltaTime);
+            FlipCharacter((towards - transform.position).x);
 
             if (Vector3.Distance(transform.position, towards) < 0.25f) {
                 _reachedDestination = true;
@@ -104,6 +106,12 @@ public class Client : MonoBehaviour, IInteractable {
 
     private void UnOccupieSeat() {
         LevelController.instance.levels[LevelController.instance.currentLevel].occupied[_currentSeat] = false;
+    }
+
+    private void FlipCharacter(float x) {
+        if (x != 0) {
+            clientSprite.flipX = x > 0;
+        }
     }
 
 }

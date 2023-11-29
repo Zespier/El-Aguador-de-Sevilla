@@ -20,16 +20,16 @@ public class PlayerController : MonoBehaviour {
 
 
     private Vector3 _direction;
-    private Collider[] _interactables = new Collider[3];
+    public Collider[] _interactables = new Collider[3];
     private bool _movingToNextLevel;
     private string _lastAnimationName;
     private float x;
     private float y;
+    private int _currentAmountWater = 2;
 
     public static Vector3 NextlevelTarget { get; set; }
 
     private void Update() {
-
 
         Movement();
         CheckInteractionZone();
@@ -91,7 +91,12 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void CheckInteractionZone() {
-        Physics.OverlapBoxNonAlloc(interactionZone.position, interactionZone.localScale / 2f, _interactables);
+        if (Physics.OverlapBoxNonAlloc(interactionZone.position, interactionZone.localScale / 2f, _interactables) > 0) {
+
+        } else {
+            _interactables = new Collider[3];
+        }
+
     }
 
     public void StartNextLevelMovement() {
