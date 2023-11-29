@@ -14,11 +14,14 @@ public class PlayerController : MonoBehaviour {
     public Transform interactionZone;
     public static bool blockInputs;
     public ServiceType serviceInHand = null;
+    public Animator animator;
+    public bool _isServing;
 
 
     private Vector3 _direction;
     private Collider[] _interactables = new Collider[3];
     private bool _movingToNextLevel;
+    private string _lastAnimationName;
 
     public static Vector3 NextlevelTarget { get; set; }
 
@@ -27,7 +30,6 @@ public class PlayerController : MonoBehaviour {
         if (blockInputs) { return; }
 
         Movement();
-        Rotation();
         CheckInteractionZone();
     }
 
@@ -40,9 +42,9 @@ public class PlayerController : MonoBehaviour {
         float x = Input.GetAxisRaw("Horizontal");
         float y = Input.GetAxisRaw("Vertical");
 
-        if (x == 0 && y == 0) { return; }
-
-        _direction = new Vector3(x, 0, y);
+        if (x == 0 && y == 0) { if (!_isServing) { PlayAnimation("Idle"); }; return; }
+        if (!_isServing) { PlayAnimation("Run"); }
+        _direction = new Vector3(x, 0, y).normalized;
 
         FlipCharacter(x);
 
@@ -55,7 +57,7 @@ public class PlayerController : MonoBehaviour {
 
     private void FlipCharacter(float x) {
         if (x != 0) {
-            playerSprite.flipX = x < 0;
+            playerSprite.flipX = x > 0;
         }
     }
 
@@ -72,6 +74,8 @@ public class PlayerController : MonoBehaviour {
         for (int i = 0; i < _interactables.Length; i++) {
             if (_interactables[i] != null && _interactables[i].TryGetComponent(out IInteractable interactable)) {
                 serviceInHand = interactable.Interact(serviceInHand);
+                _isServing = true;
+                PlayAnimation("ServeDrink");
             }
         }
     }
@@ -98,6 +102,13 @@ public class PlayerController : MonoBehaviour {
             blockInputs = false;
             _movingToNextLevel = false;
         }
+    }
+
+    public void PlayAnimation(string animationName) {
+        if (animationName != _lastAnimationName) {
+            animator.Play(animationName);
+        }
+        _lastAnimationName = animationName;
     }
 
 }
