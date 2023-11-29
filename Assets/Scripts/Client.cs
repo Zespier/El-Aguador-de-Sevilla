@@ -10,8 +10,6 @@ public class Client : MonoBehaviour, IInteractable {
     public Image serviceImage;
 
     private bool _reachedDestination;
-    private bool _isMoving;
-    private Vector3 _direction;
 
     public Vector3 MovementTarget { get; set; }
 
@@ -51,25 +49,34 @@ public class Client : MonoBehaviour, IInteractable {
 
     private IEnumerator ClientMovement() {
         _reachedDestination = false;
-        yield return StartCoroutine(MovementCoroutine(LevelController.instance.levels[LevelController.instance.currentLevel].door.position));
-        yield return StartCoroutine(MovementCoroutine(ChoosePlaceToSit()));
+        yield return StartCoroutine(MovementCoroutine(LevelController.instance.levels[LevelController.instance.currentLevel].door.position, false));
+        Debug.Log("Moving to my seat");
+        yield return StartCoroutine(MovementCoroutine(ChoosePlaceToSit(), true));
+        Debug.Log("Reached my seat");
     }
 
     private Vector3 ChoosePlaceToSit() {
 
         List<Transform> sits = LevelController.instance.levels[LevelController.instance.currentLevel].sits;
         List<bool> occupied = LevelController.instance.levels[LevelController.instance.currentLevel].occupied;
-        for (int i = 0; i < sits.Count; i++) {
-            if (!occupied[i]) {
-                return sits[i].position;
+
+        int count = sits.Count;
+
+        do {
+            int randomIndex = Random.Range(0, sits.Count);
+
+            if (!occupied[randomIndex]) {
+                return sits[randomIndex].position;
             }
-        }
+            count--;
+
+        } while (count > 0);
 
         Debug.LogError("Couldn't find any sit available");
         return Vector3.zero;
     }
 
-    private IEnumerator MovementCoroutine(Vector3 towards) {
+    private IEnumerator MovementCoroutine(Vector3 towards, bool order) {
 
         while (!_reachedDestination) {
 
@@ -80,6 +87,7 @@ public class Client : MonoBehaviour, IInteractable {
             }
             yield return null;
         }
+        _reachedDestination = false;
     }
 
 }
