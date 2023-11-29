@@ -16,18 +16,20 @@ public class PlayerController : MonoBehaviour {
     public ServiceType serviceInHand = null;
     public Animator animator;
     public bool _isServing;
+    public LevelController levelController;
 
 
     private Vector3 _direction;
     private Collider[] _interactables = new Collider[3];
     private bool _movingToNextLevel;
     private string _lastAnimationName;
+    private float x;
+    private float y;
 
     public static Vector3 NextlevelTarget { get; set; }
 
     private void Update() {
 
-        if (blockInputs) { return; }
 
         Movement();
         CheckInteractionZone();
@@ -39,20 +41,28 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void Movement() {
-        float x = Input.GetAxisRaw("Horizontal");
-        float y = Input.GetAxisRaw("Vertical");
+
+        if (!blockInputs) {
+            x = Input.GetAxisRaw("Horizontal");
+            y = Input.GetAxisRaw("Vertical");
+        } else {
+            x = 1;
+            y = 1;
+        }
+
 
         if (x == 0 && y == 0) { if (!_isServing) { PlayAnimation("Idle"); }; return; }
         if (!_isServing) { PlayAnimation("Run"); }
-        _direction = new Vector3(x, 0, y).normalized;
+
+        if (!blockInputs) {
+            _direction = new Vector3(x, 0, y).normalized;
+        } else {
+            _direction = (NextlevelTarget - transform.position).normalized;
+        }
 
         FlipCharacter(x);
 
         transform.position += speed * Time.deltaTime * _direction;
-    }
-
-    private void Rotation() {
-        transform.forward = _direction;
     }
 
     private void FlipCharacter(float x) {
@@ -84,24 +94,39 @@ public class PlayerController : MonoBehaviour {
         Physics.OverlapBoxNonAlloc(interactionZone.position, interactionZone.localScale / 2f, _interactables);
     }
 
+    public void StartNextLevelMovement() {
+        StartCoroutine(NextLevelMovement());
+    }
+
+    // Hola soy César. Te deseo lo mejor en la jam, saludaso y bebe mucha agua, wapo
+    // subnormal
+
     public IEnumerator NextLevelMovement() {
 
         if (!_movingToNextLevel) {
             _movingToNextLevel = true;
-            Vector3 _startPosition = transform.position;
 
             while (Vector3.Distance(transform.position, NextlevelTarget) > 1) {
                 //Cosas que podrían pasar con el movimiento al siguiente nivel
                 // => Que se quede atrapado contra una pared => quitar el collider
                 // => Que nunca llegue a esta distancia => Si se pasa del ángulo
                 // => Que la dirección sea atravesando el edificio y nunca pueda entrar => Nav Mesh???
-                transform.position = Vector3.MoveTowards(_startPosition, NextlevelTarget, speed * Time.deltaTime);
+                transform.position = Vector3.MoveTowards(transform.position, NextlevelTarget, speed * Time.deltaTime);
                 yield return null;
             }
 
-            blockInputs = false;
-            _movingToNextLevel = false;
+
+            NextScenenarioReached();
         }
+    }
+
+    private void NextScenenarioReached() {
+        blockInputs = false;
+        _movingToNextLevel = false;
+        levelController._transitioning = false;
+        levelController._levelTimer = 0;
+
+        Events.OnStartLevel?.Invoke();
     }
 
     public void PlayAnimation(string animationName) {

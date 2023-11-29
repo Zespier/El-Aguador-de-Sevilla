@@ -9,18 +9,29 @@ public class LevelController : MonoBehaviour {
     public int currentLevel = 0;
     public PlayerController player;
 
-    private bool _transitioning;
+    [HideInInspector] public bool _transitioning;
+    public float _levelTimer;
 
+    public int CurrentLevel { get => currentLevel; set { currentLevel = value; if (currentLevel >= levels.Count) { currentLevel = levels.Count - 1; EndGame(); } } }
+
+    public static LevelController instance;
     private void Awake() {
         StartLevel();
+
+        if (instance == null) {
+            instance = this;
+        } else {
+            Destroy(gameObject);
+        }
     }
 
     private void Update() {
+        LevelTimer();
         CheckInputs();
     }
 
     public void StartLevel() {
-        Service.availableServices = levels[currentLevel].servicesAtLevel;
+        Service.availableServices = levels[CurrentLevel].servicesAtLevel;
     }
 
     private void CheckInputs() {
@@ -34,28 +45,34 @@ public class LevelController : MonoBehaviour {
     public void CompleteLevel() {
 
         if (!_transitioning) {
-            StartCoroutine(TransitionToNextLevel());
+            TransitionToNextLevel();
         }
     }
 
-    private IEnumerator TransitionToNextLevel() {
+    private void TransitionToNextLevel() {
         _transitioning = true;
         PlayerController.blockInputs = true;
 
 
-        currentLevel++;
-        PlayerController.NextlevelTarget = levelsPositions[currentLevel].position;
-        yield return StartCoroutine(player.NextLevelMovement());
+        CurrentLevel++;
+        PlayerController.NextlevelTarget = levelsPositions[CurrentLevel].position;
+        player.StartNextLevelMovement();
 
-        _transitioning = false;
     }
 
-    //private void MoveWalls(string direction) {
-    //    if (direction.Contains("Up") || direction.Contains("up")) {
+    private void LevelTimer() {
+        if (_transitioning) { return; }
+        _levelTimer += Time.deltaTime;
+        if (_levelTimer > levels[CurrentLevel].time) {
+            CompleteLevel();
+        }
 
-    //    } else if (direction.Contains("Down") || direction.Contains("down")) {
+    }
 
-    //    }
-    //}
+    private void EndGame() {
+
+        Debug.LogWarning("Game Ended bruv you can go now");
+
+    }
 
 }

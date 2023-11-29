@@ -6,5 +6,10 @@ using UnityEngine;
 public class Level {
 
     public List<ServiceType> servicesAtLevel = new List<ServiceType>();
+    public float time = 1;
+    public Transform spawnPoint;
+    public Transform door;
+    public List<Transform> sits = new List<Transform>();
+    public List<bool> occupied = new List<bool>();
 
 }
