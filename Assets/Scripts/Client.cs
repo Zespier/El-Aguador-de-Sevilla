@@ -10,12 +10,9 @@ public class Client : MonoBehaviour, IInteractable {
     public Image serviceImage;
 
     private bool _reachedDestination;
+    private int _currentSeat;
 
     public Vector3 MovementTarget { get; set; }
-
-    private void Awake() {
-        Events.OnStartLevel += ChooseService;
-    }
 
     private void Start() {
         StartCoroutine(ClientMovement());
@@ -45,35 +42,41 @@ public class Client : MonoBehaviour, IInteractable {
         desiredService = null;
         serviceImage.sprite = null;
         bubble.SetActive(false);
+        GetOut();
+        UnOccupieSeat();
     }
 
     private IEnumerator ClientMovement() {
         _reachedDestination = false;
         yield return StartCoroutine(MovementCoroutine(LevelController.instance.levels[LevelController.instance.currentLevel].door.position, false));
-        Debug.Log("Moving to my seat");
         yield return StartCoroutine(MovementCoroutine(ChoosePlaceToSit(), true));
-        Debug.Log("Reached my seat");
     }
 
     private Vector3 ChoosePlaceToSit() {
 
-        List<Transform> sits = LevelController.instance.levels[LevelController.instance.currentLevel].sits;
+        List<Transform> seats = LevelController.instance.levels[LevelController.instance.currentLevel].seats;
         List<bool> occupied = LevelController.instance.levels[LevelController.instance.currentLevel].occupied;
 
-        int count = sits.Count;
-
-        do {
-            int randomIndex = Random.Range(0, sits.Count);
-
-            if (!occupied[randomIndex]) {
-                return sits[randomIndex].position;
+        List<int> _availableSitsIndex = new List<int>();
+        for (int i = 0; i < occupied.Count; i++) {
+            if (!occupied[i]) {
+                _availableSitsIndex.Add(i);
             }
-            count--;
+        }
 
-        } while (count > 0);
+        if (_availableSitsIndex.Count > 0) {
 
-        Debug.LogError("Couldn't find any sit available");
-        return Vector3.zero;
+            int randomIndex = Random.Range(0, _availableSitsIndex.Count);
+
+            occupied[_availableSitsIndex[randomIndex]] = true;
+            _currentSeat = _availableSitsIndex[randomIndex];
+            return seats[_availableSitsIndex[randomIndex]].position;
+
+        } else {
+            Debug.LogError("Couldn't find any sit available");
+            return -Vector3.forward * 100;
+        }
+
     }
 
     private IEnumerator MovementCoroutine(Vector3 towards, bool order) {
@@ -88,6 +91,19 @@ public class Client : MonoBehaviour, IInteractable {
             yield return null;
         }
         _reachedDestination = false;
+
+        if (order) {
+            ChooseService();
+        }
+
+    }
+
+    private void GetOut() {
+        StartCoroutine(MovementCoroutine(-Vector3.forward * 100, false));
+    }
+
+    private void UnOccupieSeat() {
+        LevelController.instance.levels[LevelController.instance.currentLevel].occupied[_currentSeat] = false;
     }
 
 }

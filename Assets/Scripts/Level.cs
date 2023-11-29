@@ -9,7 +9,7 @@ public class Level {
     public float time = 1;
     public Transform spawnPoint;
     public Transform door;
-    public List<Transform> sits = new List<Transform>();
+    public List<Transform> seats = new List<Transform>();
     public List<bool> occupied = new List<bool>();
 
 }

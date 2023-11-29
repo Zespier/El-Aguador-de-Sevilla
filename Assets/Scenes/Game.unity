@@ -840,10 +840,10 @@ MonoBehaviour:
   levels:
   - servicesAtLevel:
     - {fileID: 11400000, guid: 493c53028f028e44eb1c03d95b6e6ea8, type: 2}
-    time: 4
+    time: 30
     spawnPoint: {fileID: 837097649}
     door: {fileID: 1495727231}
-    sits:
+    seats:
     - {fileID: 456923744}
     - {fileID: 1092937417}
     - {fileID: 2079496502}
@@ -854,7 +854,7 @@ MonoBehaviour:
     time: 4
     spawnPoint: {fileID: 0}
     door: {fileID: 0}
-    sits: []
+    seats: []
     occupied: 
   levelsPositions:
   - {fileID: 586198945}
@@ -1646,6 +1646,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   clientPrefab: {fileID: 5699319571405337535, guid: e5c9561b7f16132449d7f1495e8c513e,
     type: 3}
+  timeToSpawnClients: 1.5
 --- !u!1 &2126387679
 GameObject:
   m_ObjectHideFlags: 0
