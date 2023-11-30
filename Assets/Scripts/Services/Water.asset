@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Water
   m_EditorClassIdentifier: 
   name: Water
-  sprite: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
-  gold: 4
+  sprite: {fileID: 21300000, guid: c84be63b52fbf974faf7f1728a596357, type: 3}
+  points: 0
