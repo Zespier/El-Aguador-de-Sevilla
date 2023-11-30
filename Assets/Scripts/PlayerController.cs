@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.InputSystem;
-using UnityEngine.UIElements;
 using static UnityEngine.Rendering.DebugUI;
 
-public class PlayerController : MonoBehaviour {
+public class PlayerController : MonoBehaviour
+{
 
     public SpriteRenderer playerSprite;
     public float speed = 5f;
@@ -21,6 +22,7 @@ public class PlayerController : MonoBehaviour {
     public static int maxAmountOfWater = 3;
     public ServiceType water;
     public CanvasGroup WaterAmountCanvas;
+    public Image waterFill;
 
     private Vector3 _direction;
     public Collider[] _interactables = new Collider[3];
@@ -34,37 +36,48 @@ public class PlayerController : MonoBehaviour {
     private static int _currentAmountWater = 0;
 
     public static PlayerController instance;
-    private void Awake() {
-        if (instance == null) {
+    private void Awake()
+    {
+        if (instance == null)
+        {
             instance = this;
         }
     }
 
-    private void Update() {
-
+    private void Update()
+    {
         Movement();
         CheckInteractionZone();
         RotateInteractionZone();
+
+        UpdateWaterUI();
     }
 
-    private void OnDrawGizmos() {
+    private void OnDrawGizmos()
+    {
         Gizmos.color = Color.red;
         Gizmos.DrawWireCube(interactionZone.position, interactionZone.localScale);
     }
 
-    private static int SetCurrentAmountOfWater(int value) {
-        if (value >= maxAmountOfWater) {
+    private static int SetCurrentAmountOfWater(int value)
+    {
+        if (value >= maxAmountOfWater)
+        {
             Events.OnFullWaterRetrieved?.Invoke();
         }
         return Mathf.Clamp(value, 0, maxAmountOfWater);
     }
 
-    private void Movement() {
+    private void Movement()
+    {
 
-        if (!blockInputs) {
+        if (!blockInputs)
+        {
             x = Input.GetAxisRaw("Horizontal");
             y = Input.GetAxisRaw("Vertical");
-        } else {
+        }
+        else
+        {
             x = 1;
             y = 1;
         }
@@ -73,9 +86,12 @@ public class PlayerController : MonoBehaviour {
         if (x == 0 && y == 0) { if (CurrentAmountOfWater == 0) { PlayAnimation("Idle"); }; return; }
         if (CurrentAmountOfWater == 0) { PlayAnimation("Run"); }
 
-        if (!blockInputs) {
+        if (!blockInputs)
+        {
             _direction = new Vector3(x, 0, y).normalized;
-        } else {
+        }
+        else
+        {
             _direction = (NextlevelTarget - transform.position).normalized;
         }
 
@@ -84,33 +100,43 @@ public class PlayerController : MonoBehaviour {
         transform.position += speed * Time.deltaTime * _direction;
     }
 
-    private void FlipCharacter(float x) {
-        if (x != 0) {
+    private void FlipCharacter(float x)
+    {
+        if (x != 0)
+        {
             playerSprite.flipX = x > 0;
         }
     }
 
-    public void MovementInputSystem(InputAction.CallbackContext context) {
+    public void MovementInputSystem(InputAction.CallbackContext context)
+    {
     }
 
-    public void PickUp(InputAction.CallbackContext context) {
-        if (context.started) {
+    public void PickUp(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
             PickUp();
         }
     }
 
-    private void PickUp() {
-        for (int i = 0; i < _interactables.Length; i++) {
-            if (_interactables[i] != null && _interactables[i].TryGetComponent(out IInteractable interactable)) {
+    private void PickUp()
+    {
+        for (int i = 0; i < _interactables.Length; i++)
+        {
+            if (_interactables[i] != null && _interactables[i].TryGetComponent(out IInteractable interactable))
+            {
 
                 bool lastWasWater = serviceInHand != null && serviceInHand.name.Contains("Water");
 
                 serviceInHand = interactable.Interact(serviceInHand);
 
-                if (serviceInHand == null && lastWasWater) {
+                if (serviceInHand == null && lastWasWater)
+                {
                     CurrentAmountOfWater--;
                     serviceInHand = water;
-                    if (CurrentAmountOfWater <= 0) {
+                    if (CurrentAmountOfWater <= 0)
+                    {
                         //TODO: Stop serving water
                         serviceInHand = null;
                     }
@@ -125,28 +151,36 @@ public class PlayerController : MonoBehaviour {
     //=> if we reduce the water amount then check if there is enough water left.
     //=> 
 
-    private void CheckInteractionZone() {
-        if (Physics.OverlapBoxNonAlloc(interactionZone.position, interactionZone.localScale / 2f, _interactables) > 0) {
+    private void CheckInteractionZone()
+    {
+        if (Physics.OverlapBoxNonAlloc(interactionZone.position, interactionZone.localScale / 2f, _interactables) > 0)
+        {
 
-        } else {
+        }
+        else
+        {
             _interactables = new Collider[3];
         }
 
     }
 
-    public void StartNextLevelMovement() {
+    public void StartNextLevelMovement()
+    {
         StartCoroutine(NextLevelMovement());
     }
 
     // Hola soy César. Te deseo lo mejor en la jam, saludaso y bebe mucha agua, wapo
     // subnormal
 
-    public IEnumerator NextLevelMovement() {
+    public IEnumerator NextLevelMovement()
+    {
 
-        if (!_movingToNextLevel) {
+        if (!_movingToNextLevel)
+        {
             _movingToNextLevel = true;
 
-            while (Vector3.Distance(transform.position, NextlevelTarget) > 1) {
+            while (Vector3.Distance(transform.position, NextlevelTarget) > 1)
+            {
                 //Cosas que podrían pasar con el movimiento al siguiente nivel
                 // => Que se quede atrapado contra una pared => quitar el collider
                 // => Que nunca llegue a esta distancia => Si se pasa del ángulo
@@ -160,7 +194,8 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    private void NextScenenarioReached() {
+    private void NextScenenarioReached()
+    {
         blockInputs = false;
         _movingToNextLevel = false;
         levelController._transitioning = false;
@@ -169,14 +204,27 @@ public class PlayerController : MonoBehaviour {
         Events.OnStartLevel?.Invoke();
     }
 
-    public void PlayAnimation(string animationName) {
-        if (animationName != _lastAnimationName) {
+    public void PlayAnimation(string animationName)
+    {
+        if (animationName != _lastAnimationName)
+        {
             animator.Play(animationName);
         }
         _lastAnimationName = animationName;
     }
 
-    private void RotateInteractionZone() {
+    private void RotateInteractionZone()
+    {
         interactionParent.forward = _direction;
+    }
+
+    private void UpdateWaterUI()
+    {
+        WaterAmountCanvas.alpha = CurrentAmountOfWater > 0 ? 1 : 0;
+        if (CurrentAmountOfWater > 0)
+        {
+            waterFill.fillAmount = CurrentAmountOfWater / (float)maxAmountOfWater;
+        }
+
     }
 }
