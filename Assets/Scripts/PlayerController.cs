@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour {
     public SpriteRenderer playerSprite;
     public float speed = 5f;
     [Header("Interactor")]
+    public Transform interactionParent;
     public Transform interactionZone;
     public static bool blockInputs;
     public ServiceType serviceInHand = null;
@@ -33,6 +34,7 @@ public class PlayerController : MonoBehaviour {
 
         Movement();
         CheckInteractionZone();
+        RotateInteractionZone();
     }
 
     private void OnDrawGizmos() {
@@ -141,4 +143,8 @@ public class PlayerController : MonoBehaviour {
         _lastAnimationName = animationName;
     }
 
+    private void RotateInteractionZone()
+    {
+        interactionParent.forward = _direction;
+    }
 }

@@ -6,7 +6,7 @@ using UnityEngine;
 public class Events : MonoBehaviour {
 
     public static Action OnPickUp;
-    public static Action OnClientServed;
+    public static Action<int> OnClientServed;
     public static Action OnStartLevel;
 
 }

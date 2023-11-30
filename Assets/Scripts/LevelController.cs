@@ -8,6 +8,7 @@ public class LevelController : MonoBehaviour {
     public List<Transform> levelsPositions = new List<Transform>();
     public int currentLevel = 0;
     public PlayerController player;
+    public List<int> points = new List<int>();
 
     [HideInInspector] public bool _transitioning;
     public float _levelTimer;
@@ -16,13 +17,12 @@ public class LevelController : MonoBehaviour {
 
     public static LevelController instance;
     private void Awake() {
-        StartLevel();
-
         if (instance == null) {
             instance = this;
-        } else {
-            Destroy(gameObject);
         }
+
+        StartLevel();
+        Events.OnClientServed += AddPoints;
     }
 
     private void Update() {
@@ -73,6 +73,10 @@ public class LevelController : MonoBehaviour {
 
         Debug.LogWarning("Game Ended bruv you can go now");
 
+    }
+
+    private void AddPoints(int points) {
+        this.points[currentLevel] += points;
     }
 
 }

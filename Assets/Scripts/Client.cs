@@ -29,7 +29,7 @@ public class Client : MonoBehaviour, IInteractable {
 
     public ServiceType Interact(ServiceType service) {
         if (service != null && desiredService.name == service.name) {
-            Served();
+            Served(service.points);
             Debug.Log("Client served with: " + service.name);
             return null;
         }
@@ -38,8 +38,8 @@ public class Client : MonoBehaviour, IInteractable {
         return service;
     }
 
-    public void Served() {
-        Events.OnClientServed?.Invoke();
+    public void Served(int points) {
+        Events.OnClientServed?.Invoke(points);
         desiredService = null;
         serviceImage.sprite = null;
         bubble.SetActive(false);
