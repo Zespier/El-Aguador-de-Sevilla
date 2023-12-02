@@ -4,13 +4,12 @@ using UnityEngine;
 
 public class MainMenuBook : MonoBehaviour {
 
-    public Animator animator;
-    public List<Animator> pagesAnimator;
+    public Animator bookAnimator;
+    public Animator pageAnimator;
     public List<CanvasGroup> canvasLeftPages;
     public List<CanvasGroup> canvasRightPages;
     public GameObject anyKeyText;
-
-    private List<string> _lastAnimation = new List<string>();
+    public List<string> _lastAnimation = new List<string>();
 
     private void Start() {
         StartCoroutine(WaitForAnyKey());
@@ -24,17 +23,18 @@ public class MainMenuBook : MonoBehaviour {
             yield return null;
         }
 
-        animator.Play("Open");
+        bookAnimator.Play("Open");
+        pageAnimator.Play("BookOpen");
         anyKeyText.SetActive(false);
     }
 
     public void OpenPage(int index) {
         ActiveCanvasGroup(index);
-        PlayAnimation("Open", index);
+        PlayPageAnimation("Open", index);
     }
 
     public void ClosePage(int index) {
-        PlayAnimation("Close", index);
+        PlayPageAnimation("Close", index);
     }
 
     /// <summary>
@@ -65,10 +65,10 @@ public class MainMenuBook : MonoBehaviour {
         }
     }
 
-    public void PlayAnimation(string animationName, int index) {
+    public void PlayPageAnimation(string animationName, int index) {
         index--;
         if (_lastAnimation[index] != animationName) {
-            pagesAnimator[index].Play(animationName);
+            pageAnimator.Play(animationName);
         }
 
         _lastAnimation[index] = animationName;
