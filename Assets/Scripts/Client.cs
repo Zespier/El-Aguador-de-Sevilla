@@ -4,14 +4,15 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class Client : MonoBehaviour, IInteractable {
-
     public ServiceType desiredService;
     public GameObject bubble;
     public Image serviceImage;
     public SpriteRenderer clientSprite;
+    public Animator animator;
 
     private bool _reachedDestination;
     private int _currentSeat;
+    private string _lastAnimationName;
 
     public Vector3 MovementTarget { get; set; }
 
@@ -82,6 +83,8 @@ public class Client : MonoBehaviour, IInteractable {
 
     private IEnumerator MovementCoroutine(Vector3 towards, bool order) {
 
+        PlayAnimation("Walk");
+
         while (!_reachedDestination) {
 
             transform.position = Vector3.MoveTowards(transform.position, towards, 3 * Time.deltaTime);
@@ -96,6 +99,7 @@ public class Client : MonoBehaviour, IInteractable {
 
         if (order) {
             ChooseService();
+            PlayAnimation("Idle");
         }
 
     }
@@ -112,6 +116,14 @@ public class Client : MonoBehaviour, IInteractable {
         if (x != 0) {
             clientSprite.flipX = x > 0;
         }
+    }
+
+    private void PlayAnimation(string animationName) {
+
+        if (animationName != _lastAnimationName) {
+            animator.Play(animationName);
+        }
+        _lastAnimationName = animationName;
     }
 
 }
