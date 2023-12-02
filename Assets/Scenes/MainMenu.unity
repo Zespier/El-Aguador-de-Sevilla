@@ -1839,7 +1839,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 845532159}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
@@ -2273,7 +2273,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 2.967, y: 90, z: -90}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0.407, y: -0}
+  m_AnchoredPosition: {x: 0.407, y: 0}
   m_SizeDelta: {x: 1200, y: 1787}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!225 &1142972126
@@ -2960,7 +2960,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.08723828}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: -561}
-  m_SizeDelta: {x: 80, y: 0}
+  m_SizeDelta: {x: 200, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1329963769
 MonoBehaviour:
@@ -2982,7 +2982,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Er Nasho, no se m\xE1s"
+  m_text: "Nacho Fern\xE1ndez \xC1vila"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 848c3b216c0b2b941b63203e2053c11b, type: 2}
   m_sharedMaterial: {fileID: -5684715021466637591, guid: 848c3b216c0b2b941b63203e2053c11b,
@@ -3702,7 +3702,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1676360089}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0

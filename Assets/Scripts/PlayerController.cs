@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour {
     public static int maxAmountOfWater = 3;
     public ServiceType water;
     public CanvasGroup WaterAmountCanvas;
+    public Transform waterRotationUI;
     public Image waterFill;
 
     [HideInInspector] public float _currentTimeToReachSpeed;
@@ -106,6 +107,7 @@ public class PlayerController : MonoBehaviour {
     private void FlipCharacter(float x) {
         if (x != 0) {
             playerSprite.flipX = x > 0;
+            waterRotationUI.localRotation = Quaternion.Euler(0, x > 0 ? 180 : 0, 0);
         }
     }
 

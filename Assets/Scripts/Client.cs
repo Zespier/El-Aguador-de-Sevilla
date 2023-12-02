@@ -1,14 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.AI;
 
 public class Client : MonoBehaviour, IInteractable {
+
     public ServiceType desiredService;
     public GameObject bubble;
-    public Image serviceImage;
+    public UnityEngine.UI.Image serviceImage;
     public SpriteRenderer clientSprite;
     public Animator animator;
+    public NavMeshAgent agent;
 
     private bool _reachedDestination;
     private int _currentSeat;
@@ -18,6 +20,7 @@ public class Client : MonoBehaviour, IInteractable {
 
     private void Start() {
         StartCoroutine(ClientMovement());
+        agent.updateRotation = false;
     }
 
     public void ChooseService() {
@@ -76,7 +79,7 @@ public class Client : MonoBehaviour, IInteractable {
 
         } else {
             //Debug.LogError("Couldn't find any sit available");
-            return -Vector3.forward * 100;
+            return LevelController.instance.levels[LevelController.instance.currentLevel].backHomePoint.position;
         }
 
     }
@@ -84,10 +87,12 @@ public class Client : MonoBehaviour, IInteractable {
     private IEnumerator MovementCoroutine(Vector3 towards, bool order) {
 
         PlayAnimation("Walk");
+        agent.SetDestination(towards);
 
         while (!_reachedDestination) {
 
-            transform.position = Vector3.MoveTowards(transform.position, towards, 3 * Time.deltaTime);
+            //Vector3 step = 3 * Time.deltaTime * (towards - transform.position).normalized;
+            //transform.position = Vector3.MoveTowards(transform.position, towards, 3 * Time.deltaTime);
             FlipCharacter((towards - transform.position).x);
 
             if (Vector3.Distance(transform.position, towards) < 0.25f) {
@@ -105,7 +110,7 @@ public class Client : MonoBehaviour, IInteractable {
     }
 
     private void GetOut() {
-        StartCoroutine(MovementCoroutine(-Vector3.forward * 100, false));
+        StartCoroutine(MovementCoroutine(LevelController.instance.levels[LevelController.instance.currentLevel].backHomePoint.position, false));
     }
 
     private void UnOccupieSeat() {
