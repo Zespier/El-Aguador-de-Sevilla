@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1434345709134798434}
+  - component: {fileID: 3803069563853075190}
   m_Layer: 0
   m_Name: Granero
   m_TagString: Untagged
@@ -32,6 +33,27 @@ Transform:
   - {fileID: 3547886960593720213}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &3803069563853075190
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8215795637221787193}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 9.731014, y: 10.454859, z: 10.270668}
+  m_Center: {x: 17.156443, y: 5.187893, z: -10.682762}
 --- !u!1001 &3942366122662212734
 PrefabInstance:
   m_ObjectHideFlags: 0

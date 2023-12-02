@@ -10,14 +10,17 @@ public class Pit : MonoBehaviour, IInteractable {
     public CanvasGroup miniGameCanvas;
     public Slider miniGameSlider;
     public float timeToReachTop;
-    public Vector2 retrievableArea = new Vector2(0, 1);
-    public Vector2 dobleRetrievableArea = new Vector2(0, 1);
+    public Vector2 retrievableSize = new Vector2(0, 1);
+    public Vector2 dobleRetrievableSize = new Vector2(0, 1);
     public RectTransform retrievableAreaRect;
     public RectTransform dobleRetrievableAreaRect;
 
     private float _timerMiniGame;
     private int _timerDirection = 1;
     private bool _retrievingWater;
+
+    public float RetrievableSize { get => retrievableSize.y - retrievableSize.x; }
+    public float DobleRetrievableSize { get => dobleRetrievableSize.y - dobleRetrievableSize.x; }
 
     private void Awake() {
         Events.OnFullWaterRetrieved += StopRetrievingWater;
@@ -80,11 +83,11 @@ public class Pit : MonoBehaviour, IInteractable {
 
     public void PickUpWater(InputAction.CallbackContext context) {
         if (_retrievingWater && context.canceled) {
-            if (miniGameSlider.value >= dobleRetrievableArea.x && miniGameSlider.value <= dobleRetrievableArea.y) {
+            if (miniGameSlider.value >= dobleRetrievableAreaRect.anchorMin.y && miniGameSlider.value <= dobleRetrievableAreaRect.anchorMax.y) {
                 PlayerController.CurrentAmountOfWater += 2;
                 PlayerController.instance.serviceInHand = water;
                 Debug.Log("WATER ADDE => +2");
-            } else if (miniGameSlider.value >= retrievableArea.x && miniGameSlider.value <= retrievableArea.y) {
+            } else if (miniGameSlider.value >= retrievableAreaRect.anchorMin.y && miniGameSlider.value <= retrievableAreaRect.anchorMax.y) {
                 PlayerController.CurrentAmountOfWater++;
                 PlayerController.instance.serviceInHand = water;
                 Debug.Log("WATER ADDE => +1");
@@ -99,9 +102,15 @@ public class Pit : MonoBehaviour, IInteractable {
     }
 
     private void SetRetrievableArea() {
-        retrievableAreaRect.anchorMin = new Vector2(0, retrievableArea.x);
-        retrievableAreaRect.anchorMax = new Vector2(1, retrievableArea.y);
-        dobleRetrievableAreaRect.anchorMin = new Vector2(0, dobleRetrievableArea.x);
-        dobleRetrievableAreaRect.anchorMax = new Vector2(1, dobleRetrievableArea.y);
+
+        float retrievableAreaMin = Random.Range(0, 1 - RetrievableSize);
+        float retrievableAreaMax = retrievableAreaMin + RetrievableSize;
+        float dobleRetrievableAreaMin = Random.Range(retrievableAreaMin, retrievableAreaMax - DobleRetrievableSize);
+        float dobleRetrievableAreaMax = dobleRetrievableAreaMin + DobleRetrievableSize;
+
+        retrievableAreaRect.anchorMin = new Vector2(0, retrievableAreaMin);
+        retrievableAreaRect.anchorMax = new Vector2(1, retrievableAreaMax);
+        dobleRetrievableAreaRect.anchorMin = new Vector2(0, dobleRetrievableAreaMin);
+        dobleRetrievableAreaRect.anchorMax = new Vector2(1, dobleRetrievableAreaMax);
     }
 }
