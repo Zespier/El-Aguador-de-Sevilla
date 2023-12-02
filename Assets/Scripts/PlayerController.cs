@@ -26,6 +26,7 @@ public class PlayerController : MonoBehaviour {
     public CanvasGroup WaterAmountCanvas;
     public Image waterFill;
 
+    [HideInInspector] public float _currentTimeToReachSpeed;
     private Vector3 _direction;
     public Collider[] _interactables = new Collider[3];
     private bool _movingToNextLevel;
@@ -42,6 +43,8 @@ public class PlayerController : MonoBehaviour {
         if (instance == null) {
             instance = this;
         }
+
+        _currentTimeToReachSpeed = timeToReachSpeed;
     }
 
     private void Update() {
@@ -91,7 +94,7 @@ public class PlayerController : MonoBehaviour {
     }
 
     private Vector3 LerpSpeed(Vector3 to) {
-        return Vector3.Lerp(rb.velocity, to, Time.deltaTime / timeToReachSpeed);
+        return Vector3.Lerp(rb.velocity, to, Time.deltaTime / _currentTimeToReachSpeed);
     }
 
     private void CameraMovement(Vector3 playerPosition, Vector3 target, float speedTime) {
