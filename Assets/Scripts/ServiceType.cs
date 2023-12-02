@@ -7,6 +7,6 @@ public class ServiceType : ScriptableObject {
 
     public string name;
     public Sprite sprite;
-    public int points;
+    public int score;
 
 }

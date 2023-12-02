@@ -12,5 +12,6 @@ public class Level {
     public Transform backHomePoint;
     public List<Transform> seats = new List<Transform>();
     public List<bool> occupied = new List<bool>();
+    public int score;
 
 }

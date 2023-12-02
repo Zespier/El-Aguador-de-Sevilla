@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class LevelController : MonoBehaviour {
 
+    public CanvasGroup scoreCanvas;
+
     public List<Level> levels = new List<Level>();
     public List<Transform> levelsPositions = new List<Transform>();
     public int currentLevel = 0;
@@ -12,6 +14,7 @@ public class LevelController : MonoBehaviour {
 
     [HideInInspector] public bool _transitioning;
     public float _levelTimer;
+    private bool _showingScoreToPlayer;
 
     public int CurrentLevel { get => currentLevel; set { currentLevel = value; if (currentLevel >= levels.Count) { currentLevel = levels.Count - 1; EndGame(); } } }
 
@@ -56,8 +59,7 @@ public class LevelController : MonoBehaviour {
 
         CurrentLevel++;
         PlayerController.NextlevelTarget = levelsPositions[CurrentLevel].position;
-        player.StartNextLevelMovement();
-
+        StartCoroutine(TransitionToNextLevelCoroutine());
     }
 
     private void LevelTimer() {
@@ -66,6 +68,31 @@ public class LevelController : MonoBehaviour {
         if (_levelTimer > levels[CurrentLevel].time) {
             CompleteLevel();
         }
+    }
+
+    private IEnumerator TransitionToNextLevelCoroutine() {
+
+        yield return ShowScoreToPlayer();
+
+        player.StartNextLevelMovement();
+
+
+    }
+
+    private IEnumerator ShowScoreToPlayer() {
+        if (!_showingScoreToPlayer) {
+
+            ActivateScoreCanvas(true);
+
+            while (_showingScoreToPlayer) {
+                yield return null;
+            }
+
+            ActivateScoreCanvas(false);
+        }
+    }
+
+    public void CanMoveToNextLevel() {
 
     }
 
@@ -79,4 +106,9 @@ public class LevelController : MonoBehaviour {
         this.points[currentLevel] += points;
     }
 
+    private void ActivateScoreCanvas(bool activate) {
+        scoreCanvas.alpha = activate ? 1 : 0;
+        scoreCanvas.interactable = activate;
+        scoreCanvas.blocksRaycasts = activate;
+    }
 }

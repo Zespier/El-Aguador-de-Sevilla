@@ -33,8 +33,9 @@ public class Client : MonoBehaviour, IInteractable {
 
     public ServiceType Interact(ServiceType service) {
         if (service != null && desiredService.name == service.name) {
-            Served(service.points);
+            Served(service.score);
             Debug.Log("Client served with: " + service.name);
+            LevelController.instance.levels[LevelController.instance.currentLevel].score += service.score;
             return null;
         }
 

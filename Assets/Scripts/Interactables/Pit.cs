@@ -87,8 +87,9 @@ public class Pit : MonoBehaviour, IInteractable {
         _timerMiniGame += Time.deltaTime * _timerDirection;
 
         if (_timerMiniGame > timeToReachTop) {
-            //TODO: Que se caiga el agua
             _timerMiniGame = timeToReachTop;
+            _retrievingWater = false;
+            AwaController.instance.SpawnAwa(player.transform.position);
 
         } else if (_timerMiniGame < 0) {
 
