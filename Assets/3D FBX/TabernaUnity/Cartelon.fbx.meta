@@ -9,6 +9,26 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: Barrilete
     second: {fileID: 2100000, guid: cab6d4cf962967e40867524cc54b0409, type: 2}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Barrilete_Base_color
+    second: {fileID: 2800000, guid: 1b48f1fd9f3b98d4792620dc4120f127, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Barrilete_Metallic
+    second: {fileID: 2800000, guid: cab1d05cd5ad7154996aab2408d32e7e, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Barrilete_Normal_OpenGL
+    second: {fileID: 2800000, guid: ba62ff2f6bf087a4280996f545e8dc17, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Barrilete_Roughness
+    second: {fileID: 2800000, guid: d2a51c3065f4d9a48bae05b7e826ab0a, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0
