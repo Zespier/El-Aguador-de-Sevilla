@@ -6,10 +6,11 @@ public class MainMenuBook : MonoBehaviour {
 
     public Animator animator;
     public List<Animator> pagesAnimator;
-    public List<CanvasGroup> canvasPages;
+    public List<CanvasGroup> canvasLeftPages;
+    public List<CanvasGroup> canvasRightPages;
     public GameObject anyKeyText;
 
-    private List<string> _lastAnimation;
+    private List<string> _lastAnimation = new List<string>();
 
     private void Start() {
         StartCoroutine(WaitForAnyKey());
@@ -41,20 +42,31 @@ public class MainMenuBook : MonoBehaviour {
     /// </summary>
     /// <param name="index"></param>
     public void ActiveCanvasGroup(int index) {
-        for (int i = 1; i <= canvasPages.Count; i++) {
+        index--;
+        for (int i = 0; i < canvasLeftPages.Count; i++) {
             if (i == index) {
-                canvasPages[i].alpha = 1;
-                canvasPages[i].interactable = true;
-                canvasPages[i].blocksRaycasts = true;
+                canvasLeftPages[i].alpha = 1;
+                canvasLeftPages[i].interactable = true;
+                canvasLeftPages[i].blocksRaycasts = true;
+
+                canvasRightPages[i].alpha = 1;
+                canvasRightPages[i].interactable = true;
+                canvasRightPages[i].blocksRaycasts = true;
+
             } else {
-                canvasPages[i].alpha = 0;
-                canvasPages[i].interactable = false;
-                canvasPages[i].blocksRaycasts = false;
+                canvasLeftPages[i].alpha = 0;
+                canvasLeftPages[i].interactable = false;
+                canvasLeftPages[i].blocksRaycasts = false;
+
+                canvasRightPages[i].alpha = 0;
+                canvasRightPages[i].interactable = false;
+                canvasRightPages[i].blocksRaycasts = false;
             }
         }
     }
 
     public void PlayAnimation(string animationName, int index) {
+        index--;
         if (_lastAnimation[index] != animationName) {
             pagesAnimator[index].Play(animationName);
         }
