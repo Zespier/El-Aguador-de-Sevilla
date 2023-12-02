@@ -7,6 +7,9 @@ using UnityEngine.UI;
 public class Pit : MonoBehaviour, IInteractable {
 
     public ServiceType water;
+    public PlayerController player;
+    [Header("Minigame")]
+    public List<Transform> sides;
     public CanvasGroup miniGameCanvas;
     public Slider miniGameSlider;
     public float timeToReachTop;
@@ -64,6 +67,18 @@ public class Pit : MonoBehaviour, IInteractable {
 
     private void ActivateCanvas(bool activate) {
         miniGameCanvas.alpha = activate ? 1 : 0;
+
+        float maxDistance = 0;
+        int index = 0;
+
+        for (int i = 0; i < sides.Count; i++) {
+            if (Vector3.Distance(player.transform.position, sides[i].position) > maxDistance) {
+                maxDistance = Vector3.Distance(player.transform.position, sides[i].position);
+                index = i;
+            }
+        }
+
+        miniGameCanvas.transform.position = sides[index].transform.position;
     }
 
     private void Timer() {

@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour {
 
     [HideInInspector] public float _currentTimeToReachSpeed;
     private Vector3 _direction;
-    public Collider[] _interactables = new Collider[3];
+    public Collider[] _interactables = new Collider[20];
     private bool _movingToNextLevel;
     private string _lastAnimationName;
     private float x;
@@ -145,12 +145,11 @@ public class PlayerController : MonoBehaviour {
     //=> 
 
     private void CheckInteractionZone() {
-        if (Physics.OverlapBoxNonAlloc(interactionZone.position, interactionZone.localScale / 2f, _interactables) > 0) {
+        if (Physics.OverlapBoxNonAlloc(interactionZone.position, interactionZone.localScale / 2f, _interactables) > 1) {
 
         } else {
-            _interactables = new Collider[3];
+            _interactables = new Collider[20];
         }
-
     }
 
     public void StartNextLevelMovement() {
