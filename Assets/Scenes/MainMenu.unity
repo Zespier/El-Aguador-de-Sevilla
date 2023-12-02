@@ -2728,7 +2728,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 1949732355}
-  pagesAnimator: []
+  pagesAnimator:
+  - {fileID: 0}
+  - {fileID: 0}
   canvasLeftPages:
   - {fileID: 1008624219}
   - {fileID: 1008624219}
