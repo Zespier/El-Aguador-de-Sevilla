@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LevelController : MonoBehaviour {
 
@@ -19,8 +20,9 @@ public class LevelController : MonoBehaviour {
     [HideInInspector] public bool _transitioning;
     public float _levelTimer;
     [HideInInspector] public bool _showingScoreToPlayer;
+    private int _lastLevel;
 
-    public int CurrentLevel { get => currentLevel; set { currentLevel = value; if (currentLevel >= levels.Count) { currentLevel = levels.Count - 1; EndGame(); } } }
+    public int CurrentLevel { get => currentLevel; set { _lastLevel = currentLevel; currentLevel = value; if (currentLevel >= levels.Count) { currentLevel = levels.Count - 1; EndGame(); } } }
 
     public static LevelController instance;
     private void Awake() {
@@ -100,12 +102,15 @@ public class LevelController : MonoBehaviour {
 
     public void CanMoveToNextLevel() {
         _showingScoreToPlayer = false;
+
+        if (_lastLevel == levels.Count - 1) {
+            SceneManager.LoadScene(0);
+        }
     }
 
     private void EndGame() {
 
         Debug.LogWarning("Game Ended bruv you can go now");
-
     }
 
     private void AddPoints(int points) {

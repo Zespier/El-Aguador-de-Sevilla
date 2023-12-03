@@ -18,6 +18,10 @@ public class Client : MonoBehaviour, IInteractable {
 
     public Vector3 MovementTarget { get; set; }
 
+    private void Awake() {
+        clientSprite.sprite = Resources.Load<Sprite>("NormalClient" + Random.Range(1, 4));
+    }
+
     private void Start() {
         StartCoroutine(ClientMovement());
         agent.updateRotation = false;
@@ -55,10 +59,15 @@ public class Client : MonoBehaviour, IInteractable {
     private IEnumerator ClientMovement() {
         _reachedDestination = false;
         yield return StartCoroutine(MovementCoroutine(LevelController.instance.levels[LevelController.instance.currentLevel].door.position, false));
-        yield return StartCoroutine(MovementCoroutine(ChoosePlaceToSit(), true));
+        Vector3 _newSeatPosition = ChoosePlaceToSit(out bool serve);
+        if (serve) {
+            yield return StartCoroutine(MovementCoroutine(_newSeatPosition, serve));
+        } else {
+            GetOut();
+        }
     }
 
-    private Vector3 ChoosePlaceToSit() {
+    private Vector3 ChoosePlaceToSit(out bool serve) {
 
         List<Transform> seats = LevelController.instance.levels[LevelController.instance.currentLevel].seats;
         List<bool> occupied = LevelController.instance.levels[LevelController.instance.currentLevel].occupied;
@@ -76,10 +85,11 @@ public class Client : MonoBehaviour, IInteractable {
 
             occupied[_availableSitsIndex[randomIndex]] = true;
             _currentSeat = _availableSitsIndex[randomIndex];
+            serve = true;
             return seats[_availableSitsIndex[randomIndex]].position;
 
         } else {
-            //Debug.LogError("Couldn't find any sit available");
+            serve = false;
             return LevelController.instance.levels[LevelController.instance.currentLevel].backHomePoint.position;
         }
 
@@ -111,7 +121,13 @@ public class Client : MonoBehaviour, IInteractable {
     }
 
     private void GetOut() {
-        StartCoroutine(MovementCoroutine(LevelController.instance.levels[LevelController.instance.currentLevel].backHomePoint.position, false));
+        StartCoroutine(GetOutCoroutine());
+    }
+
+    private IEnumerator GetOutCoroutine() {
+        yield return StartCoroutine(MovementCoroutine(LevelController.instance.levels[LevelController.instance.currentLevel].backHomePoint.position, false));
+
+        Destroy(gameObject);
     }
 
     private void UnOccupieSeat() {

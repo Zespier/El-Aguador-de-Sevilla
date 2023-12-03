@@ -48,6 +48,7 @@ public class Pit : MonoBehaviour, IInteractable {
     private IEnumerator PitMinigame() {
         if (!_retrievingWater) {
             _retrievingWater = true;
+            _timerMiniGame = 0;
 
             PlayerController.NextlevelTarget = PlayerController.instance.transform.position;
             PlayerController.blockInputs = true;
