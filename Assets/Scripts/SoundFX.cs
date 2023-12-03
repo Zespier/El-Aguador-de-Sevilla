@@ -23,6 +23,9 @@ public class SoundFX : MonoBehaviour {
             audioSource.playOnAwake = false;
             audioSource.clip = clips[i];
             audioSource.volume = sounds[i].volume;
+            if (sounds[i].name.Contains("Ambient")) {
+                audioSource.loop = true;
+            }
             sounds[i].audioSource = audioSource;
         }
     }
@@ -33,6 +36,10 @@ public class SoundFX : MonoBehaviour {
 
     public void Play3DSound() {
         //Spawn a sound in world position
+    }
+
+    public void PlayAmbientSound() {
+        sounds.Where(s => s.name == "Ambient").SingleOrDefault().audioSource.Play();
     }
 
 }
