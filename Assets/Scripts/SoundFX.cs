@@ -22,6 +22,7 @@ public class SoundFX : MonoBehaviour {
             AudioSource audioSource = gameObject.AddComponent<AudioSource>();
             audioSource.playOnAwake = false;
             audioSource.clip = clips[i];
+            audioSource.volume = sounds[i].volume;
             sounds[i].audioSource = audioSource;
         }
     }

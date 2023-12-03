@@ -463,6 +463,8 @@ MonoBehaviour:
   clientSprite: {fileID: 8366589797933379857}
   animator: {fileID: 5920870685326505024}
   agent: {fileID: 7424302499080317924}
+  generator: {fileID: 0}
+  ID: 0
 --- !u!95 &5920870685326505024
 Animator:
   serializedVersion: 5
@@ -493,7 +495,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 5699319571405337535}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
+  m_Radius: 0.2
   m_Speed: 3.5
   m_Acceleration: 100000
   avoidancePriority: 50
@@ -502,7 +504,7 @@ NavMeshAgent:
   m_AutoTraverseOffMeshLink: 0
   m_AutoBraking: 1
   m_AutoRepath: 0
-  m_Height: 2
+  m_Height: 1
   m_BaseOffset: 0
   m_WalkableMask: 1
   m_ObstacleAvoidanceType: 4
@@ -525,7 +527,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.2
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1.1, z: 0}

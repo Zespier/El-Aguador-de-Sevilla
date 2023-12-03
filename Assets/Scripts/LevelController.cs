@@ -12,6 +12,7 @@ public class LevelController : MonoBehaviour {
     public Animator doorAnimator;
 
     public TMP_Text timeLeftLevelTimer;
+    public TMP_Text scoreDiegetico;
     public List<Level> levels = new List<Level>();
     public List<Transform> levelsPositions = new List<Transform>();
     public int currentLevel = 0;
@@ -31,6 +32,8 @@ public class LevelController : MonoBehaviour {
         }
 
         StartLevel();
+
+        Events.OnClientServed += UpdateScoreDiegetico;
     }
 
     private void Update() {
@@ -142,5 +145,14 @@ public class LevelController : MonoBehaviour {
         if (activate) {
             SoundFX.instance.PlaySound("LevelFinish");
         }
+    }
+
+    private void UpdateScoreDiegetico(int value) {
+        int sum = 0;
+        for (int i = 0; i < levels.Count; i++) {
+            sum += levels[i].score;
+        }
+
+        scoreDiegetico.text = sum.ToString();
     }
 }

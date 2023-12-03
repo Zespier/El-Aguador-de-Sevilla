@@ -36,6 +36,7 @@ public class PlayerController : MonoBehaviour {
     private string _lastAnimationName;
     private float x;
     private float y;
+    [HideInInspector] public bool _blockMovement;
 
     public static Vector3 NextlevelTarget { get; set; }
     public static int CurrentAmountOfWater { get => _currentAmountWater; set => _currentAmountWater = SetCurrentAmountOfWater(value); }
@@ -49,6 +50,7 @@ public class PlayerController : MonoBehaviour {
 
         _currentTimeToReachSpeed = timeToReachSpeed;
         CurrentAmountOfWater = 0;
+        blockInputs = false;
     }
 
     private void Update() {
@@ -90,7 +92,7 @@ public class PlayerController : MonoBehaviour {
             }
 
 
-        } else if (LevelController.instance._showingScoreToPlayer) {
+        } else if (LevelController.instance._showingScoreToPlayer || _blockMovement) {
 
             _direction = Vector3.zero;
 
@@ -164,7 +166,7 @@ public class PlayerController : MonoBehaviour {
     //=> 
 
     private void CheckInteractionZone() {
-        if (Physics.OverlapBoxNonAlloc(interactionZone.position, interactionZone.localScale / 2f, _interactables) > 1) {
+        if (Physics.OverlapBoxNonAlloc(interactionZone.position, interactionZone.localScale / 2f, _interactables) > 0) {
 
         } else {
             _interactables = new Collider[20];

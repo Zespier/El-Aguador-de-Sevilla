@@ -52,11 +52,12 @@ public class Pit : MonoBehaviour, IInteractable {
 
             PlayerController.NextlevelTarget = PlayerController.instance.transform.position;
             PlayerController.blockInputs = true;
+            player._blockMovement = true;
             player.PlayAnimation("Idle");
             ActivateCanvas(true);
             SetRetrievableArea();
 
-            while (_retrievingWater) {
+            while (_retrievingWater && !LevelController.instance._showingScoreToPlayer) {
                 Timer();
                 miniGameSlider.value = _timerMiniGame / timeToReachTop;
                 yield return null;
@@ -64,6 +65,8 @@ public class Pit : MonoBehaviour, IInteractable {
 
             ActivateCanvas(false);
             PlayerController.blockInputs = false;
+            player._blockMovement = false;
+
         }
     }
 
