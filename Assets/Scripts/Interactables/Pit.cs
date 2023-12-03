@@ -52,6 +52,7 @@ public class Pit : MonoBehaviour, IInteractable {
 
             PlayerController.NextlevelTarget = PlayerController.instance.transform.position;
             PlayerController.blockInputs = true;
+            player.PlayAnimation("Idle");
             ActivateCanvas(true);
             SetRetrievableArea();
 

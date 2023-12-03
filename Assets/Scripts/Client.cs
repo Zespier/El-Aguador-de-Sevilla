@@ -25,6 +25,7 @@ public class Client : MonoBehaviour, IInteractable {
     private void Start() {
         StartCoroutine(ClientMovement());
         agent.updateRotation = false;
+        bubble.SetActive(false);
     }
 
     public void ChooseService() {

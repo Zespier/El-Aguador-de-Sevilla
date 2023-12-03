@@ -123,5 +123,9 @@ public class LevelController : MonoBehaviour {
         scoreCanvas.blocksRaycasts = activate;
 
         scoreText.text = levels[currentLevel - 1].score.ToString();
+
+        if (activate) {
+            SoundFX.instance.PlaySound("LevelFinish");
+        }
     }
 }
