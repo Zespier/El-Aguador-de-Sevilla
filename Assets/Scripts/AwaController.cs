@@ -6,7 +6,9 @@ public class AwaController : MonoBehaviour {
 
     public GameObject awaPrefab;
     public Transform area;
+    public float timeToSpawnAwa = 10;
     public float _timerToSpawnAwa;
+    public float numberOfRandomWaters = 2;
 
     public static AwaController instance;
     private void Awake() {
@@ -17,10 +19,12 @@ public class AwaController : MonoBehaviour {
 
     private void Update() {
         _timerToSpawnAwa += Time.deltaTime;
-        if (_timerToSpawnAwa >= 10f) {
+        if (_timerToSpawnAwa >= timeToSpawnAwa) {
             _timerToSpawnAwa = 0;
-            Vector3 newPosition = new Vector3(Random.Range(area.position.x - area.localScale.x / 2f, area.position.x + area.localScale.x / 2f), 0, Random.Range(area.position.z - area.localScale.z / 2f, area.position.z + area.localScale.z));
-            SpawnAwa(newPosition, false);
+            for (int i = 0; i < numberOfRandomWaters; i++) {
+                Vector3 newPosition = new Vector3(Random.Range(area.position.x - area.localScale.x / 2f, area.position.x + area.localScale.x / 2f), 0, Random.Range(area.position.z - area.localScale.z / 2f, area.position.z + area.localScale.z));
+                SpawnAwa(newPosition, false);
+            }
         }
     }
 

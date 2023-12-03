@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.SceneManagement;
 
 public class SoundFX : MonoBehaviour {
 
@@ -24,7 +25,7 @@ public class SoundFX : MonoBehaviour {
             audioSource.playOnAwake = false;
             audioSource.clip = clips[i];
             audioSource.volume = sounds[i].volume;
-            if (sounds[i].name.Contains("Ambient")) {
+            if (sounds[i].name.Contains("Ambient") || sounds[i].name.Contains("Ambient2")) {
                 audioSource.loop = true;
             }
             sounds[i].audioSource = audioSource;
@@ -40,7 +41,10 @@ public class SoundFX : MonoBehaviour {
     }
 
     public void PlayAmbientSound() {
-        sounds.Where(s => s.name == "Ambient").SingleOrDefault().audioSource.Play();
+        if (SceneManager.GetActiveScene().name.Contains("Level")) {
+            sounds.Where(s => s.name == "Ambient").SingleOrDefault().audioSource.Play();
+        }
+        sounds.Where(s => s.name == "Ambient2").SingleOrDefault().audioSource.Play();
     }
 
 }

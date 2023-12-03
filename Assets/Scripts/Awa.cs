@@ -44,7 +44,9 @@ public class Awa : MonoBehaviour {
         UpdateAwaAlpha();
 
         if (_finishTimer >= timeToFinish) {
-            player._currentTimeToReachSpeed = player.timeToReachSpeed;
+            if (player != null) {
+                player._currentTimeToReachSpeed = player.timeToReachSpeed;
+            }
             Destroy(gameObject);
         }
     }
