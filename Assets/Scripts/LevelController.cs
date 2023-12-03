@@ -132,7 +132,12 @@ public class LevelController : MonoBehaviour {
         scoreCanvas.interactable = activate;
         scoreCanvas.blocksRaycasts = activate;
 
-        scoreText.text = levels[currentLevel - 1].score.ToString();
+        int sum = 0;
+        for (int i = 0; i < levels.Count; i++) {
+            sum += levels[i].score;
+        }
+
+        scoreText.text = sum.ToString();
 
         if (activate) {
             SoundFX.instance.PlaySound("LevelFinish");

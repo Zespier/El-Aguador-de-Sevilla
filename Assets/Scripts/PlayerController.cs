@@ -7,6 +7,7 @@ using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using static UnityEngine.Rendering.DebugUI;
 using static UnityEngine.GraphicsBuffer;
+using UnityEngine.AI;
 
 public class PlayerController : MonoBehaviour {
 
@@ -26,6 +27,7 @@ public class PlayerController : MonoBehaviour {
     public CanvasGroup WaterAmountCanvas;
     public Transform waterRotationUI;
     public Image waterFill;
+    public NavMeshAgent agent;
 
     [HideInInspector] public float _currentTimeToReachSpeed;
     private Vector3 _direction;
@@ -181,16 +183,23 @@ public class PlayerController : MonoBehaviour {
         if (!_movingToNextLevel) {
             _movingToNextLevel = true;
 
+            agent.isStopped = false;
+            agent.updateRotation = false;
+            agent.SetDestination(LevelController.instance.levels[LevelController.instance.currentLevel].door.position);
+
             while (Vector3.Distance(transform.position, LevelController.instance.levels[LevelController.instance.currentLevel].door.position) > 1) {
-                transform.position = Vector3.MoveTowards(transform.position, LevelController.instance.levels[LevelController.instance.currentLevel].door.position, speed * Time.deltaTime);
+                //transform.position = Vector3.MoveTowards(transform.position, LevelController.instance.levels[LevelController.instance.currentLevel].door.position, speed * Time.deltaTime);
                 yield return null;
             }
+
+            agent.SetDestination(NextlevelTarget);
 
             while (Vector3.Distance(transform.position, NextlevelTarget) > 1) {
-                transform.position = Vector3.MoveTowards(transform.position, NextlevelTarget, speed * Time.deltaTime);
+                //transform.position = Vector3.MoveTowards(transform.position, NextlevelTarget, speed * Time.deltaTime);
                 yield return null;
             }
 
+            agent.isStopped = true;
 
             NextScenenarioReached();
         }
