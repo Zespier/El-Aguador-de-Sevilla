@@ -1311,25 +1311,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b038c2fd3ad81541b9cda54291f3d9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  scoreCanvas: {fileID: 0}
+  scoreText: {fileID: 0}
+  doorAnimator: {fileID: 0}
   levels:
   - servicesAtLevel:
     - {fileID: 11400000, guid: 493c53028f028e44eb1c03d95b6e6ea8, type: 2}
     time: 30
     spawnPoint: {fileID: 837097649}
     door: {fileID: 1495727231}
+    backHomePoint: {fileID: 0}
     seats:
     - {fileID: 456923744}
     - {fileID: 1092937417}
     - {fileID: 2079496502}
     - {fileID: 1865155848}
     occupied: 00000000
+    score: 0
   - servicesAtLevel:
     - {fileID: 11400000, guid: 493c53028f028e44eb1c03d95b6e6ea8, type: 2}
     time: 4
     spawnPoint: {fileID: 0}
     door: {fileID: 0}
+    backHomePoint: {fileID: 0}
     seats: []
     occupied: 
+    score: 0
   levelsPositions:
   - {fileID: 586198945}
   - {fileID: 880433960}
@@ -1338,6 +1345,7 @@ MonoBehaviour:
   points: 0000000000000000
   _transitioning: 0
   _levelTimer: 0
+  _showingScoreToPlayer: 0
 --- !u!1 &1092937416
 GameObject:
   m_ObjectHideFlags: 0
@@ -2018,11 +2026,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   water: {fileID: 11400000, guid: 493c53028f028e44eb1c03d95b6e6ea8, type: 2}
+  player: {fileID: 0}
+  sides: []
   miniGameCanvas: {fileID: 1964728256}
   miniGameSlider: {fileID: 942109655}
   timeToReachTop: 0.8
-  retrievableArea: {x: 0.2, y: 0.7}
-  dobleRetrievableArea: {x: 0.3, y: 0.55}
+  retrievableSize: {x: 0, y: 1}
+  dobleRetrievableSize: {x: 0, y: 1}
   retrievableAreaRect: {fileID: 1566299312}
   dobleRetrievableAreaRect: {fileID: 187208424}
 --- !u!1 &1796146623
@@ -2340,6 +2350,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerSprite: {fileID: 2061439989}
   speed: 6.23
+  timeToReachSpeed: 0.2
+  rb: {fileID: 0}
   interactionParent: {fileID: 603880366}
   interactionZone: {fileID: 1796146624}
   serviceInHand: {fileID: 0}
@@ -2347,7 +2359,9 @@ MonoBehaviour:
   levelController: {fileID: 999462722}
   water: {fileID: 11400000, guid: 493c53028f028e44eb1c03d95b6e6ea8, type: 2}
   WaterAmountCanvas: {fileID: 882122603}
+  waterRotationUI: {fileID: 0}
   waterFill: {fileID: 12827560}
+  _currentTimeToReachSpeed: 0
   _interactables:
   - {fileID: 0}
   - {fileID: 0}
