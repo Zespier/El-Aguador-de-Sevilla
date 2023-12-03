@@ -1,10 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class LevelController : MonoBehaviour {
 
+    [Header("Next Level")]
     public CanvasGroup scoreCanvas;
+    public TMP_Text scoreText;
+    public Animator doorAnimator;
 
     public List<Level> levels = new List<Level>();
     public List<Transform> levelsPositions = new List<Transform>();
@@ -14,7 +18,7 @@ public class LevelController : MonoBehaviour {
 
     [HideInInspector] public bool _transitioning;
     public float _levelTimer;
-    private bool _showingScoreToPlayer;
+    [HideInInspector] public bool _showingScoreToPlayer;
 
     public int CurrentLevel { get => currentLevel; set { currentLevel = value; if (currentLevel >= levels.Count) { currentLevel = levels.Count - 1; EndGame(); } } }
 
@@ -72,7 +76,9 @@ public class LevelController : MonoBehaviour {
 
     private IEnumerator TransitionToNextLevelCoroutine() {
 
-        yield return ShowScoreToPlayer();
+        yield return StartCoroutine(ShowScoreToPlayer());
+
+        doorAnimator.Play("Open");
 
         player.StartNextLevelMovement();
 
@@ -81,7 +87,7 @@ public class LevelController : MonoBehaviour {
 
     private IEnumerator ShowScoreToPlayer() {
         if (!_showingScoreToPlayer) {
-
+            _showingScoreToPlayer = true;
             ActivateScoreCanvas(true);
 
             while (_showingScoreToPlayer) {
@@ -93,7 +99,7 @@ public class LevelController : MonoBehaviour {
     }
 
     public void CanMoveToNextLevel() {
-
+        _showingScoreToPlayer = false;
     }
 
     private void EndGame() {
@@ -110,5 +116,7 @@ public class LevelController : MonoBehaviour {
         scoreCanvas.alpha = activate ? 1 : 0;
         scoreCanvas.interactable = activate;
         scoreCanvas.blocksRaycasts = activate;
+
+        scoreText.text = levels[currentLevel - 1].score.ToString();
     }
 }

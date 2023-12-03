@@ -87,9 +87,19 @@ public class PlayerController : MonoBehaviour {
             }
 
 
+        } else if (LevelController.instance._showingScoreToPlayer) {
+
+            _direction = Vector3.zero;
+
+            rb.velocity = LerpSpeed(_direction * speed);
+
+            PlayAnimation("Idle");
+
         } else {
             _direction = (NextlevelTarget - transform.position).normalized;
+            PlayAnimation("Run");
 
+            FlipCharacter(_direction);
         }
         //transform.position += speed * Time.deltaTime * _direction;
     }
@@ -109,6 +119,10 @@ public class PlayerController : MonoBehaviour {
             playerSprite.flipX = x > 0;
             waterRotationUI.localRotation = Quaternion.Euler(0, x > 0 ? 180 : 0, 0);
         }
+    }
+    private void FlipCharacter(Vector3 direction) {
+        playerSprite.flipX = direction.x > 0;
+        waterRotationUI.localRotation = Quaternion.Euler(0, direction.x > 0 ? 180 : 0, 0);
     }
 
     public void MovementInputSystem(InputAction.CallbackContext context) {
@@ -166,11 +180,12 @@ public class PlayerController : MonoBehaviour {
         if (!_movingToNextLevel) {
             _movingToNextLevel = true;
 
+            while (Vector3.Distance(transform.position, LevelController.instance.levels[LevelController.instance.currentLevel].door.position) > 1) {
+                transform.position = Vector3.MoveTowards(transform.position, LevelController.instance.levels[LevelController.instance.currentLevel].door.position, speed * Time.deltaTime);
+                yield return null;
+            }
+
             while (Vector3.Distance(transform.position, NextlevelTarget) > 1) {
-                //Cosas que podrían pasar con el movimiento al siguiente nivel
-                // => Que se quede atrapado contra una pared => quitar el collider
-                // => Que nunca llegue a esta distancia => Si se pasa del ángulo
-                // => Que la dirección sea atravesando el edificio y nunca pueda entrar => Nav Mesh???
                 transform.position = Vector3.MoveTowards(transform.position, NextlevelTarget, speed * Time.deltaTime);
                 yield return null;
             }

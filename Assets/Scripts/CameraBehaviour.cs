@@ -13,6 +13,8 @@ public class CameraBehaviour : MonoBehaviour {
     [Header("CameraLimits")]
     public Transform minLimit;
     public Transform maxLimit;
+    public Transform tabernMinLimit;
+    public Transform tabernMaxLimit;
     [Header("Shake")]
     public float shakeDuration = 0.2f;
     public float shakeAmplitude = 0.1f;
@@ -20,6 +22,7 @@ public class CameraBehaviour : MonoBehaviour {
     private Vector3 _selfieStick;
     private Coroutine _movingCamera;
     private Coroutine _cameraShakeAnimation;
+    [HideInInspector] public bool onTabern;
 
     public Vector3 Target { get; set; }
     public float CameraLerpSpeed { get => cameraLerpingSpeed; set => cameraLerpingSpeed = value; }
@@ -35,8 +38,15 @@ public class CameraBehaviour : MonoBehaviour {
 
     private Vector3 NewCameraPosition() {
         Vector3 newPosition = player.transform.position;
-        newPosition.x = Mathf.Clamp(newPosition.x, minLimit.position.x, maxLimit.position.x);
-        newPosition.z = Mathf.Clamp(newPosition.z, minLimit.position.z, maxLimit.position.z);
+
+        if (onTabern) {
+            newPosition.x = Mathf.Clamp(newPosition.x, tabernMinLimit.position.x, tabernMaxLimit.position.x);
+            newPosition.z = Mathf.Clamp(newPosition.z, tabernMinLimit.position.z, tabernMaxLimit.position.z);
+        } else {
+            newPosition.x = Mathf.Clamp(newPosition.x, minLimit.position.x, maxLimit.position.x);
+            newPosition.z = Mathf.Clamp(newPosition.z, minLimit.position.z, maxLimit.position.z);
+        }
+
         return newPosition + _selfieStick;
     }
 
