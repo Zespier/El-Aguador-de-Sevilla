@@ -7,8 +7,13 @@ public class Awa : MonoBehaviour {
     public SphereCollider sphereCollider;
     public Collider[] contacts = new Collider[1];
     public float timeToReachSpeed = 0.6f;
+    public SpriteRenderer awaSprite;
+    public float timeToFinish = 4f;
+    public Color startColor;
+    public Color endColor;
 
     private bool _manchado = false;
+    private float _finishTimer;
 
     private void Update() {
         contacts = Physics.OverlapSphere(sphereCollider.transform.position, sphereCollider.radius);
@@ -33,6 +38,18 @@ public class Awa : MonoBehaviour {
             contacts = new Collider[1];
 
         }
+
+        _finishTimer += Time.deltaTime;
+        UpdateAwaAlpha();
+
+        if (_finishTimer >= timeToFinish) {
+            Destroy(gameObject);
+        }
+    }
+
+    private void UpdateAwaAlpha() {
+
+        awaSprite.color = Color.Lerp(startColor, endColor, _finishTimer / timeToFinish);
     }
 
     private IEnumerator MEMANCHO(PlayerController player) {

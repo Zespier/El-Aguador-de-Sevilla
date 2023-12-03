@@ -137,6 +137,10 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   timeToReachSpeed: 2.4
+  awaSprite: {fileID: 1649403712625807034}
+  timeToFinish: 7
+  startColor: {r: 1, g: 1, b: 1, a: 1}
+  endColor: {r: 1, g: 1, b: 1, a: 0}
 --- !u!135 &712811197068785942
 SphereCollider:
   m_ObjectHideFlags: 0

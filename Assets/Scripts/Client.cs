@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -11,23 +13,30 @@ public class Client : MonoBehaviour, IInteractable {
     public SpriteRenderer clientSprite;
     public Animator animator;
     public NavMeshAgent agent;
+    public float timeBetweenAwa = 2.5f;
 
     [HideInInspector] public ClientGenerator generator;
     [HideInInspector] public int ID;
     private bool _reachedDestination;
     private int _currentSeat;
     private string _lastAnimationName;
+    private float _awaTimer;
 
     public Vector3 MovementTarget { get; set; }
 
     private void Awake() {
-        clientSprite.sprite = Resources.Load<Sprite>("NormalClient" + Random.Range(1, 4));
+        clientSprite.sprite = Resources.Load<Sprite>("NormalClient" + Random.Range(1, 8));
     }
 
     private void Start() {
         StartCoroutine(ClientMovement());
         agent.updateRotation = false;
         bubble.SetActive(false);
+        _awaTimer = timeBetweenAwa;
+    }
+
+    private void Update() {
+        _awaTimer += Time.deltaTime;
     }
 
     public void ChooseService() {
@@ -40,13 +49,11 @@ public class Client : MonoBehaviour, IInteractable {
 
     public ServiceType Interact(ServiceType service) {
         if (service != null && desiredService != null && desiredService.name == service.name) {
-            Served(service.score);
-            Debug.Log("Client served with: " + service.name);
             LevelController.instance.levels[LevelController.instance.currentLevel].score += service.score;
+            Served(service.score);
             return null;
         }
 
-        Debug.Log("WRONG SERVICE");
         return service;
     }
 
@@ -150,6 +157,18 @@ public class Client : MonoBehaviour, IInteractable {
             animator.Play(animationName);
         }
         _lastAnimationName = animationName;
+    }
+
+    private void OnCollisionEnter(Collision collision) {
+        ContactPoint[] contacts = collision.contacts;
+
+        for (int i = 0; i < contacts.Length; i++) {
+            if (contacts[i].thisCollider.CompareTag("Client") && _awaTimer >= timeBetweenAwa) {
+                AwaController.instance.SpawnAwa(transform.position);
+
+                _awaTimer = 0;
+            }
+        }
     }
 
 }

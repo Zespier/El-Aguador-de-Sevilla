@@ -112,6 +112,8 @@ public class Pit : MonoBehaviour, IInteractable {
                 PlayerController.CurrentAmountOfWater++;
                 PlayerController.instance.serviceInHand = water;
                 Debug.Log("WATER ADDE => +1");
+            } else if (miniGameSlider.value >= 0.05f) {
+                AwaController.instance.SpawnAwa(player.transform.position);
             }
 
             _timerMiniGame = 0;
