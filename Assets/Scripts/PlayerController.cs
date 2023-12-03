@@ -46,6 +46,7 @@ public class PlayerController : MonoBehaviour {
         }
 
         _currentTimeToReachSpeed = timeToReachSpeed;
+        CurrentAmountOfWater = 0;
     }
 
     private void Update() {

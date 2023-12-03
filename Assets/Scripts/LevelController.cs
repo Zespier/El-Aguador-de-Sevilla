@@ -83,7 +83,7 @@ public class LevelController : MonoBehaviour {
 
         float timeLeft = levels[CurrentLevel].time - _levelTimer;
 
-        int minutes = (int)timeLeft / 60; 
+        int minutes = (int)timeLeft / 60;
         int seconds = (int)timeLeft % 60;
         string secondsString = seconds >= 10 ? seconds.ToString() : "0" + seconds.ToString();
         timeLeftLevelTimer.text = minutes + ":" + secondsString;

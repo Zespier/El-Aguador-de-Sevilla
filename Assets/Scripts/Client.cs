@@ -13,6 +13,7 @@ public class Client : MonoBehaviour, IInteractable {
     public NavMeshAgent agent;
 
     [HideInInspector] public ClientGenerator generator;
+    [HideInInspector] public int ID;
     private bool _reachedDestination;
     private int _currentSeat;
     private string _lastAnimationName;
@@ -38,7 +39,7 @@ public class Client : MonoBehaviour, IInteractable {
     }
 
     public ServiceType Interact(ServiceType service) {
-        if (service != null && desiredService.name == service.name) {
+        if (service != null && desiredService != null && desiredService.name == service.name) {
             Served(service.score);
             Debug.Log("Client served with: " + service.name);
             LevelController.instance.levels[LevelController.instance.currentLevel].score += service.score;
@@ -129,7 +130,7 @@ public class Client : MonoBehaviour, IInteractable {
 
     private IEnumerator GetOutCoroutine() {
         yield return StartCoroutine(MovementCoroutine(LevelController.instance.levels[LevelController.instance.currentLevel].backHomePoint.position, false));
-        generator.RemoveClientFromList(this);
+        generator.RemoveClientFromList(this.ID);
         Destroy(gameObject);
     }
 

@@ -9,10 +9,13 @@ public class ClientGenerator : MonoBehaviour {
 
     private GameObject _newClient;
     private float _timerToSpawnClients;
-    private List<Client> _generatedClients = new List<Client>();
+    public List<Client> _generatedClients = new List<Client>();
+    private int _lastIndex = 0;
 
     private void Awake() {
         Events.OnLevelCompleted += AllClientsGoTOFuckingHome;
+        List<Client> _generatedClients = new List<Client>();
+
     }
 
     private void Start() {
@@ -48,18 +51,25 @@ public class ClientGenerator : MonoBehaviour {
                 _newClient.transform.position = LevelController.instance.levels[LevelController.instance.currentLevel].spawnPoint.position;
                 Client newClient = _newClient.GetComponent<Client>();
                 newClient.generator = this;
+                newClient.ID = _lastIndex++;
                 _generatedClients.Add(newClient);
             }
         }
     }
 
-    public void RemoveClientFromList(Client client) {
-        _generatedClients.Remove(client);
+    public void RemoveClientFromList(int ID) {
+        for (int i = 0; i < _generatedClients.Count; i++) {
+            if (_generatedClients[i].ID == ID) {
+                _generatedClients.RemoveAt(i);
+            }
+        }
     }
 
     public void AllClientsGoTOFuckingHome() {
         for (int i = 0; i < _generatedClients.Count; i++) {
-            _generatedClients[i].GetOut();
+            if (_generatedClients[i] != null) {
+                _generatedClients[i].GetOut();
+            }
         }
     }
 }
