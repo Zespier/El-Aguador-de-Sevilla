@@ -11,11 +11,11 @@ public class LevelController : MonoBehaviour {
     public TMP_Text scoreText;
     public Animator doorAnimator;
 
+    public TMP_Text timeLeftLevelTimer;
     public List<Level> levels = new List<Level>();
     public List<Transform> levelsPositions = new List<Transform>();
     public int currentLevel = 0;
     public PlayerController player;
-    public List<int> points = new List<int>();
 
     [HideInInspector] public bool _transitioning;
     public float _levelTimer;
@@ -31,7 +31,6 @@ public class LevelController : MonoBehaviour {
         }
 
         StartLevel();
-        Events.OnClientServed += AddPoints;
     }
 
     private void Update() {
@@ -53,6 +52,8 @@ public class LevelController : MonoBehaviour {
     /// </summary>
     public void CompleteLevel() {
 
+        Events.OnLevelCompleted?.Invoke();
+
         if (!_transitioning) {
             TransitionToNextLevel();
         }
@@ -71,9 +72,22 @@ public class LevelController : MonoBehaviour {
     private void LevelTimer() {
         if (_transitioning) { return; }
         _levelTimer += Time.deltaTime;
+        SetIndexicalTimer();
         if (_levelTimer > levels[CurrentLevel].time) {
             CompleteLevel();
         }
+    }
+
+    private void SetIndexicalTimer() {
+
+
+        float timeLeft = levels[CurrentLevel].time - _levelTimer;
+
+        int minutes = (int)timeLeft / 60; 
+        int seconds = (int)timeLeft % 60;
+        string secondsString = seconds >= 10 ? seconds.ToString() : "0" + seconds.ToString();
+        timeLeftLevelTimer.text = minutes + ":" + secondsString;
+
     }
 
     private IEnumerator TransitionToNextLevelCoroutine() {
@@ -111,10 +125,6 @@ public class LevelController : MonoBehaviour {
     private void EndGame() {
 
         Debug.LogWarning("Game Ended bruv you can go now");
-    }
-
-    private void AddPoints(int points) {
-        this.points[currentLevel] += points;
     }
 
     private void ActivateScoreCanvas(bool activate) {

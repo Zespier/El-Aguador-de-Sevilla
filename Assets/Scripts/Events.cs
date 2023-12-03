@@ -9,5 +9,6 @@ public class Events : MonoBehaviour {
     public static Action<int> OnClientServed;
     public static Action OnStartLevel;
     public static Action OnFullWaterRetrieved;
+    public static Action OnLevelCompleted;
 
 }

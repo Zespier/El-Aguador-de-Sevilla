@@ -12,6 +12,7 @@ public class Client : MonoBehaviour, IInteractable {
     public Animator animator;
     public NavMeshAgent agent;
 
+    [HideInInspector] public ClientGenerator generator;
     private bool _reachedDestination;
     private int _currentSeat;
     private string _lastAnimationName;
@@ -80,7 +81,7 @@ public class Client : MonoBehaviour, IInteractable {
             }
         }
 
-        if (_availableSitsIndex.Count > 0) {
+        if (_availableSitsIndex.Count > 0 && !LevelController.instance._showingScoreToPlayer) {
 
             int randomIndex = Random.Range(0, _availableSitsIndex.Count);
 
@@ -121,13 +122,14 @@ public class Client : MonoBehaviour, IInteractable {
 
     }
 
-    private void GetOut() {
+    public void GetOut() {
         StartCoroutine(GetOutCoroutine());
+        bubble.SetActive(false);
     }
 
     private IEnumerator GetOutCoroutine() {
         yield return StartCoroutine(MovementCoroutine(LevelController.instance.levels[LevelController.instance.currentLevel].backHomePoint.position, false));
-
+        generator.RemoveClientFromList(this);
         Destroy(gameObject);
     }
 

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3834708676119340906}
   - component: {fileID: 309648315885403631}
   - component: {fileID: 4062865568636525092}
+  - component: {fileID: 6167106200135356772}
   m_Layer: 0
   m_Name: Viga
   m_TagString: Untagged
@@ -83,3 +84,24 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &6167106200135356772
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 623945669520684560}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 8.437557, y: 0.6573974, z: 1.00125}
+  m_Center: {x: 0.0011603832, y: 0.011920214, z: -0.00070790946}

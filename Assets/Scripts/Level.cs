@@ -11,6 +11,7 @@ public class Level {
     public Transform door;
     public Transform backHomePoint;
     public List<Transform> seats = new List<Transform>();
+    public int maxClients;
     public List<bool> occupied = new List<bool>();
     public int score;
 

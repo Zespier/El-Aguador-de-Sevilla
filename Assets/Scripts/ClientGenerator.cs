@@ -9,6 +9,11 @@ public class ClientGenerator : MonoBehaviour {
 
     private GameObject _newClient;
     private float _timerToSpawnClients;
+    private List<Client> _generatedClients = new List<Client>();
+
+    private void Awake() {
+        Events.OnLevelCompleted += AllClientsGoTOFuckingHome;
+    }
 
     private void Start() {
         SpawnClient();
@@ -25,7 +30,9 @@ public class ClientGenerator : MonoBehaviour {
     private void SpawnClient() {
 
         if (LevelController.instance.levels[LevelController.instance.currentLevel].occupied != null &&
-            LevelController.instance.levels[LevelController.instance.currentLevel].occupied.Count > 0) {
+            LevelController.instance.levels[LevelController.instance.currentLevel].occupied.Count > 0 &&
+            LevelController.instance.levels[LevelController.instance.currentLevel].maxClients > _generatedClients.Count &&
+            !LevelController.instance._showingScoreToPlayer) {
 
             bool _canSpawn = false;
 
@@ -39,8 +46,20 @@ public class ClientGenerator : MonoBehaviour {
             if (_canSpawn) {
                 _newClient = Instantiate(clientPrefab);
                 _newClient.transform.position = LevelController.instance.levels[LevelController.instance.currentLevel].spawnPoint.position;
+                Client newClient = _newClient.GetComponent<Client>();
+                newClient.generator = this;
+                _generatedClients.Add(newClient);
             }
         }
     }
 
+    public void RemoveClientFromList(Client client) {
+        _generatedClients.Remove(client);
+    }
+
+    public void AllClientsGoTOFuckingHome() {
+        for (int i = 0; i < _generatedClients.Count; i++) {
+            _generatedClients[i].GetOut();
+        }
+    }
 }
