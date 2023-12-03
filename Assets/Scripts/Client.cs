@@ -13,7 +13,8 @@ public class Client : MonoBehaviour, IInteractable {
     public SpriteRenderer clientSprite;
     public Animator animator;
     public NavMeshAgent agent;
-    public float timeBetweenAwa = 2.5f;
+    public float minTimeBetweenAwa = 7f;
+    public float maxTimeBetweenAwa = 15f;
 
     [HideInInspector] public ClientGenerator generator;
     [HideInInspector] public int ID;
@@ -21,6 +22,7 @@ public class Client : MonoBehaviour, IInteractable {
     private int _currentSeat;
     private string _lastAnimationName;
     private float _awaTimer;
+    private float _currentTimeBetweenAwa;
 
     public Vector3 MovementTarget { get; set; }
 
@@ -32,11 +34,16 @@ public class Client : MonoBehaviour, IInteractable {
         StartCoroutine(ClientMovement());
         agent.updateRotation = false;
         bubble.SetActive(false);
-        _awaTimer = timeBetweenAwa;
+        SetTimeBetweenAwa();
     }
 
     private void Update() {
         _awaTimer += Time.deltaTime;
+
+        if (_awaTimer >= _currentTimeBetweenAwa) {
+            AwaController.instance.SpawnAwa(transform.position);
+            SetTimeBetweenAwa();
+        }
     }
 
     public void ChooseService() {
@@ -163,12 +170,17 @@ public class Client : MonoBehaviour, IInteractable {
         ContactPoint[] contacts = collision.contacts;
 
         for (int i = 0; i < contacts.Length; i++) {
-            if (contacts[i].thisCollider.CompareTag("Client") && _awaTimer >= timeBetweenAwa) {
+            if (contacts[i].thisCollider.CompareTag("Client") && _awaTimer >= _currentTimeBetweenAwa) {
                 AwaController.instance.SpawnAwa(transform.position);
 
-                _awaTimer = 0;
+                SetTimeBetweenAwa();
             }
         }
+    }
+
+    private void SetTimeBetweenAwa() {
+        _currentTimeBetweenAwa = Random.Range(minTimeBetweenAwa, maxTimeBetweenAwa);
+        _awaTimer = 0;
     }
 
 }

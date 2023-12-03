@@ -421,8 +421,6 @@ GameObject:
   - component: {fileID: 5920870685326505024}
   - component: {fileID: 7424302499080317924}
   - component: {fileID: 2114204066066393926}
-  - component: {fileID: 6504445595486955712}
-  - component: {fileID: 7262495591882310326}
   m_Layer: 0
   m_Name: NormalClient
   m_TagString: Client
@@ -465,6 +463,8 @@ MonoBehaviour:
   clientSprite: {fileID: 8366589797933379857}
   animator: {fileID: 5920870685326505024}
   agent: {fileID: 7424302499080317924}
+  minTimeBetweenAwa: 7
+  maxTimeBetweenAwa: 30
   generator: {fileID: 0}
   ID: 0
 --- !u!95 &5920870685326505024
@@ -533,53 +533,3 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1.1, z: 0}
---- !u!136 &6504445595486955712
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5699319571405337535}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.2
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 1.1, z: 0}
---- !u!54 &7262495591882310326
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5699319571405337535}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 116
-  m_CollisionDetection: 0

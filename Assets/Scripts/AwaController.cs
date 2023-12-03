@@ -15,6 +15,7 @@ public class AwaController : MonoBehaviour {
 
     public void SpawnAwa(Vector3 position) {
         Instantiate(awaPrefab, position, Quaternion.identity);
+        SoundFX.instance.PlaySound("SplashWater");
     }
 
 }
