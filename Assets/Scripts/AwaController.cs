@@ -5,6 +5,8 @@ using UnityEngine;
 public class AwaController : MonoBehaviour {
 
     public GameObject awaPrefab;
+    public Transform area;
+    public float _timerToSpawnAwa;
 
     public static AwaController instance;
     private void Awake() {
@@ -13,9 +15,25 @@ public class AwaController : MonoBehaviour {
         }
     }
 
-    public void SpawnAwa(Vector3 position) {
+    private void Update() {
+        _timerToSpawnAwa += Time.deltaTime;
+        if (_timerToSpawnAwa >= 10f) {
+            _timerToSpawnAwa = 0;
+            Vector3 newPosition = new Vector3(Random.Range(area.position.x - area.localScale.x / 2f, area.position.x + area.localScale.x / 2f), 0, Random.Range(area.position.z - area.localScale.z / 2f, area.position.z + area.localScale.z));
+            SpawnAwa(newPosition, false);
+        }
+    }
+
+    private void OnDrawGizmos() {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(area.position, area.localScale);
+    }
+
+    public void SpawnAwa(Vector3 position, bool sound) {
         Instantiate(awaPrefab, position, Quaternion.identity);
-        SoundFX.instance.PlaySound("SplashWater");
+        if (sound) {
+            SoundFX.instance.PlaySound("SplashWater");
+        }
     }
 
 }

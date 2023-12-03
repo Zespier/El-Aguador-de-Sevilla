@@ -12,6 +12,7 @@ public class Awa : MonoBehaviour {
     public Color startColor;
     public Color endColor;
 
+    private PlayerController player;
     private bool _manchado = false;
     private float _finishTimer;
 
@@ -43,6 +44,7 @@ public class Awa : MonoBehaviour {
         UpdateAwaAlpha();
 
         if (_finishTimer >= timeToFinish) {
+            player._currentTimeToReachSpeed = player.timeToReachSpeed;
             Destroy(gameObject);
         }
     }
@@ -55,6 +57,7 @@ public class Awa : MonoBehaviour {
     private IEnumerator MEMANCHO(PlayerController player) {
         if (!_manchado) {
             _manchado = true;
+            this.player = player;
             player._currentTimeToReachSpeed = timeToReachSpeed;
 
             while (_manchado) {

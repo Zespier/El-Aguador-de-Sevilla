@@ -14,6 +14,7 @@ public class SoundFX : MonoBehaviour {
             instance = this;
         }
         SetAudioClips();
+        PlayAmbientSound();
     }
 
     private void SetAudioClips() {

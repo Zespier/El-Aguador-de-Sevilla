@@ -94,7 +94,7 @@ public class Pit : MonoBehaviour, IInteractable {
         if (_timerMiniGame > timeToReachTop) {
             _timerMiniGame = timeToReachTop;
             _retrievingWater = false;
-            AwaController.instance.SpawnAwa(player.transform.position);
+            AwaController.instance.SpawnAwa(player.transform.position, true);
 
         } else if (_timerMiniGame < 0) {
 
@@ -113,7 +113,7 @@ public class Pit : MonoBehaviour, IInteractable {
                 PlayerController.instance.serviceInHand = water;
                 Debug.Log("WATER ADDE => +1");
             } else if (miniGameSlider.value >= 0.05f) {
-                AwaController.instance.SpawnAwa(player.transform.position);
+                AwaController.instance.SpawnAwa(player.transform.position, true);
             }
 
             _timerMiniGame = 0;
