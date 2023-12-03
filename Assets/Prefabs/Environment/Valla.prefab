@@ -152,6 +152,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: PuertaVAlla
       objectReference: {fileID: 0}
+    - target: {fileID: 3648176093975097272, guid: 43c2b6bf916b3894ebe2bcb98dd37fbc,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3648176093975097272, guid: 43c2b6bf916b3894ebe2bcb98dd37fbc,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 1fcc17c09f9c0644aaf5e46adaf4c801, type: 2}
+    - target: {fileID: 7728260919787152682, guid: 43c2b6bf916b3894ebe2bcb98dd37fbc,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7728260919787152682, guid: 43c2b6bf916b3894ebe2bcb98dd37fbc,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 1fcc17c09f9c0644aaf5e46adaf4c801, type: 2}
     - target: {fileID: 7986574638335573034, guid: 43c2b6bf916b3894ebe2bcb98dd37fbc,
         type: 3}
       propertyPath: m_LocalPosition.x
