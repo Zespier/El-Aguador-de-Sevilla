@@ -23,17 +23,20 @@ public class MainMenuBook : MonoBehaviour {
             yield return null;
         }
 
+        SoundFX.instance.PlaySound("BookOpen");
         bookAnimator.Play("Open");
         pageAnimator.Play("BookOpen");
         anyKeyText.SetActive(false);
     }
 
     public void OpenPage(int index) {
+        SoundFX.instance.PlaySound("PageOpen");
         ActiveCanvasGroup(index);
         PlayPageAnimation("Open", index);
     }
 
     public void ClosePage(int index) {
+        SoundFX.instance.PlaySound("PageOpen");
         PlayPageAnimation("Close", index);
     }
 

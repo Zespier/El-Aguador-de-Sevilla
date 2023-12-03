@@ -9,22 +9,28 @@ public class Client : MonoBehaviour, IInteractable {
 
     public ServiceType desiredService;
     public GameObject bubble;
+    public CanvasGroup angryCanvas;
     public UnityEngine.UI.Image serviceImage;
     public SpriteRenderer clientSprite;
     public Animator animator;
     public NavMeshAgent agent;
     public float probabilityOfPouringWater = 30f;
+    public float timeToGetAngry = 20f;
+    public float timeToLeave = 30f;
 
     [HideInInspector] public ClientGenerator generator;
     [HideInInspector] public int ID;
     private bool _reachedDestination;
     private int _currentSeat;
     private string _lastAnimationName;
+    private float _angryTime;
+    private bool _angry;
 
     public Vector3 MovementTarget { get; set; }
 
     private void Awake() {
         clientSprite.sprite = Resources.Load<Sprite>("NormalClient" + Random.Range(1, 8));
+        angryCanvas.alpha = 0;
     }
 
     private void Start() {
@@ -39,6 +45,9 @@ public class Client : MonoBehaviour, IInteractable {
 
         bubble.SetActive(true);
         serviceImage.sprite = desiredService.sprite;
+
+        _angryTime = 0;
+        StartCoroutine(GetAngryCoroutine());
     }
 
     public ServiceType Interact(ServiceType service) {
@@ -58,6 +67,7 @@ public class Client : MonoBehaviour, IInteractable {
         bubble.SetActive(false);
         GetOut();
         UnOccupieSeat();
+        SoundFX.instance.PlaySound("ServeWater");
         MaybeSpawnAwa();
     }
 
@@ -161,4 +171,26 @@ public class Client : MonoBehaviour, IInteractable {
         _lastAnimationName = animationName;
     }
 
+    private IEnumerator GetAngryCoroutine() {
+        while (_angryTime < timeToLeave) {
+            _angryTime += Time.deltaTime;
+
+            if (_angryTime >= timeToGetAngry) {
+                GetAngry();
+            }
+
+            if (_angryTime >= timeToLeave) {
+                GetOut();
+            }
+            yield return null;
+        }
+    }
+
+    private void GetAngry() {
+        if (!_angry) {
+            _angry = true;
+            angryCanvas.alpha = 1;
+
+        }
+    }
 }
