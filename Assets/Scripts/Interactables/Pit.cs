@@ -11,6 +11,7 @@ public class Pit : MonoBehaviour, IInteractable {
     [Header("Minigame")]
     public List<Transform> sides;
     public CanvasGroup miniGameCanvas;
+    public CanvasGroup tutorialCanvas;
     public Slider miniGameSlider;
     public float timeToReachTop;
     public Vector2 retrievableSize = new Vector2(0, 1);
@@ -27,13 +28,10 @@ public class Pit : MonoBehaviour, IInteractable {
 
     private void Awake() {
         Events.OnFullWaterRetrieved += StopRetrievingWater;
+        ActivateTutorialCanvas(true);
     }
 
     public ServiceType Interact(ServiceType service) {
-        //Condiciones:
-        // => Que tengamos las manos vacías
-        // => Que tengamos agua ya pero no esté lleno el botijo
-        // => Que te detenga el movimiento
 
 
         if (service == null || (service.name.Contains("Water") && PlayerController.CurrentAmountOfWater < PlayerController.maxAmountOfWater)) {
@@ -56,6 +54,7 @@ public class Pit : MonoBehaviour, IInteractable {
             player.PlayAnimation("Idle");
             ActivateCanvas(true);
             SetRetrievableArea();
+            ActivateTutorialCanvas(false);
 
             while (_retrievingWater && !LevelController.instance._showingScoreToPlayer) {
                 Timer();
@@ -84,6 +83,9 @@ public class Pit : MonoBehaviour, IInteractable {
         }
 
         miniGameCanvas.transform.position = sides[index].transform.position;
+    }
+    private void ActivateTutorialCanvas(bool activate) {
+        tutorialCanvas.alpha = activate ? 1 : 0;
     }
 
     private void Timer() {
